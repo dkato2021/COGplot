@@ -14,6 +14,25 @@ import matplotlib.patches as patches
 from matplotlib import colors
 import math
 
+def get_args():
+    parser = argparse.ArgumentParser(description='dkato. November, 2021')
+    parser.add_argument('-rps' , dest ='rps', nargs='*',
+                        help = 'path_to_rpsRes', required=True)
+    #parser.add_argument('-p' , dest ='protein', nargs='*',
+    #                    help = 'paths_to_proteins', required=True)
+    #parser.add_argument('-cogdb' , dest ='cogdb',
+    #                    default= '/home/tmp/db/COG/Cog')    
+    parser.add_argument('-cddid' , dest ='cddid',
+                        default= '/home/tmp/db/COG/cdd2cog/cddid_COG.tbl')
+    parser.add_argument('-cog', dest='cog', 
+                        default='/home/tmp/db/COG/cdd2cog/cog-20.def.tsv',
+                        help = 'cog-20.def.tsv')
+    return parser.parse_args()
+
+#'/Users/daiki/Python/M2/rpsblast/data/cddid_COG.tbl'
+#'/home/tmp/db/COG/cdd2cog/cddid_COG.tbl'
+#'/Users/daiki/Python/M2/rpsblast/data/cog-20.def.tsv'
+#'/home/tmp/db/COG/cdd2cog/cog-20.def.tsv'
 default_colors = [
     # r, g, b, a
     [92, 192, 98, 0.5],
@@ -382,25 +401,7 @@ def venn6(labels, ax, names=['A', 'B', 'C', 'D', 'E'], **options):
 
 
 
-def get_args():
-    parser = argparse.ArgumentParser(description='dkato. November, 2021')
-    parser.add_argument('-rps' , dest ='rps', nargs='*',
-                        help = 'path_to_rpsRes', required=True)
-    #parser.add_argument('-p' , dest ='protein', nargs='*',
-    #                    help = 'paths_to_proteins', required=True)
-    #parser.add_argument('-cogdb' , dest ='cogdb',
-    #                    default= '/home/tmp/db/COG/Cog')    
-    parser.add_argument('-cddid' , dest ='cddid',
-                        default= '/Users/daiki/Python/M2/rpsblast/data/cddid_COG.tbl')
-    parser.add_argument('-cog', dest='cog', 
-                        default='/Users/daiki/Python/M2/rpsblast/data/cog-20.def.tsv',
-                        help = 'cog-20.def.tsv')
-    return parser.parse_args()
 
-#'/Users/daiki/Python/M2/rpsblast/data/cddid_COG.tbl'
-#'/home/tmp/db/COG/cdd2cog/cddid_COG.tbl'
-#'/Users/daiki/Python/M2/rpsblast/data/cog-20.def.tsv'
-#'/home/tmp/db/COG/cdd2cog/cog-20.def.tsv'
 
 def preprocess(rps = None,
                cddid = None,
@@ -496,8 +497,8 @@ def plot_bar(df = None, name = None):
 def plot_or_not(unique_COGs):
     return sum([unique_COG==set() for unique_COG in unique_COGs]) !=len(unique_COGs)
 
-def venn_func(unique_COG, labels, ax):
-    subsets = venn.get_labels(unique_COG, fill=['number', 'logic'])
+def venn_func(dataset, unique_COG, labels, ax):
+    subsets = get_labels(unique_COG, fill=['number', 'logic'])
     if len(list(dataset.keys()))==2:
         return matplotlib_venn.venn2(subsets=unique_COG, set_labels = labels)
     elif len(list(dataset.keys()))==3:
@@ -523,7 +524,7 @@ def plot_venn(dataset = None):
         x = dataset[list(dataset.keys())[j]]
         unique_COG.append(set(x['COG'].unique()))
 
-    venn_func(unique_COG, list(dataset.keys()), ax)
+    venn_func(dataset, unique_COG, list(dataset.keys()), ax)
     ax.set_title('All genes')  
     fig.savefig(f"./out/venn{len(list(dataset.keys()))}Diagrams.png")
 
@@ -537,7 +538,7 @@ def plot_venn(dataset = None):
 
         if plot_or_not(unique_COG):
             ax = fig.add_subplot(6, 5, i+1)
-            venn_func(unique_COG, list(dataset.keys()), ax)
+            venn_func(dataset, unique_COG, list(dataset.keys()), ax)
             ax.set_title(f'{alphabet}')
             plt.tight_layout()
             fig.savefig(f"./out/COGvenn{len(list(dataset.keys()))}Diagrams.png")
@@ -553,9 +554,8 @@ def main():
     plot_bar(df = ratio_data, name ='ratio')
     print(f'==>COG_count.png and COG_ratio.png are created.')
     
-    if len(path_to_rpsRes) <=6:
+    if len(get_args().rps) <=6:
         print('2.creating venn diagrams..')
-        print('3.creating venn diagrams..')
         plot_venn(dataset = dataset)
         print(f'==>venn diagrams are created.')
 
