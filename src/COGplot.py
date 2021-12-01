@@ -519,8 +519,8 @@ def plot_bar(df = None, name = None):
 def plot_or_not(unique_COGs):
     return sum([unique_COG==set() for unique_COG in unique_COGs]) !=len(unique_COGs)
 
-def venn_func(unique_COG, labels, ax):
-    subsets = venn.get_labels(unique_COG, fill=['number', 'logic'])
+def venn_func(dataset, unique_COG, labels, ax):
+    subsets = get_labels(unique_COG, fill=['number', 'logic'])
     if len(list(dataset.keys()))==2:
         return matplotlib_venn.venn2(subsets=unique_COG, set_labels = labels)
     elif len(list(dataset.keys()))==3:
@@ -546,7 +546,7 @@ def plot_venn(dataset = None):
         x = dataset[list(dataset.keys())[j]]
         unique_COG.append(set(x['COG'].unique()))
 
-    venn_func(unique_COG, list(dataset.keys()), ax)
+    venn_func(dataset, unique_COG, list(dataset.keys()), ax)
     ax.set_title('All genes')  
     fig.savefig(f"./out/venn{len(list(dataset.keys()))}Diagrams.png")
 
@@ -560,7 +560,7 @@ def plot_venn(dataset = None):
 
         if plot_or_not(unique_COG):
             ax = fig.add_subplot(6, 5, i+1)
-            venn_func(unique_COG, list(dataset.keys()), ax)
+            venn_func(dataset, unique_COG, list(dataset.keys()), ax)
             ax.set_title(f'{alphabet}')
             plt.tight_layout()
             fig.savefig(f"./out/COGvenn{len(list(dataset.keys()))}Diagrams.png")
@@ -578,7 +578,7 @@ def main():
     plot_bar(df = count_data, name ='count')
     plot_bar(df = ratio_data, name ='ratio')
     print(f'==>COG_count.png and COG_ratio.png are created.')
-    if len(path_to_rpsRes) <=6:
+    if len(get_args().AA) <=6:
         print('3.creating venn diagrams..')
         plot_venn(dataset = dataset)
         print(f'==>venn diagrams are created.')
