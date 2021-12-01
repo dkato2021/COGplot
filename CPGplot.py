@@ -29,8 +29,13 @@ def get_args():
                         default='/home/tmp/db/COG/cdd2cog/cog-20.def.tsv',
                         help = 'path to your cog-20.def.tsv(default:/home/tmp/db/COG/Cog)')
     return parser.parse_args()
+#'/Users/daiki/Python/M2/rpsblast/data/cog-20.def.tsv',
+#'/home/tmp/db/COG/cdd2cog/cog-20.def.tsv'
+#'/Users/daiki/Python/M2/rpsblast/data/cddid_COG.tbl',
+#'/home/tmp/db/COG/cdd2cog/cddid_COG.tbl'
 
-  def run_rpsblast(paths_to_proteins = None, 
+
+def run_rpsblast(paths_to_proteins = None, 
                  path_to_cogdb = None, 
                  evalue = None):
     
@@ -47,8 +52,8 @@ def get_args():
                        , shell=True)
         path_to_rpsRes.append(f"./res_rpsblast/{name}_rpsblastout.txt")
     return path_to_rpsRes
-  
-  def preprocess(rps = None,
+
+def preprocess(rps = None,
                cddid = None,
                cog = None):
 
@@ -187,13 +192,13 @@ def plot_venn(dataset = None):
             ax.set_title(f'{alphabet}')
             plt.tight_layout()
             fig.savefig(f"./out/COGvenn{len(list(dataset.keys()))}Diagrams.png")
-
+                
             
 if __name__ == "__main__":
-    print('1.rpsblast now..')
+    print('1.rpsblast now...')
     path_to_rpsRes = run_rpsblast(paths_to_proteins = get_args().AA, 
                                   path_to_cogdb = get_args().cogdb, 
-                                 evalue = get_args().evalue)
+                                  evalue = get_args().evalue)
     print('2.creating barplot..')
     count_data, ratio_data, dataset = get_main_dataset(path_to_rpsRes = path_to_rpsRes,
                                                       path_to_cddid = get_args().cddid,
@@ -205,5 +210,4 @@ if __name__ == "__main__":
     print('3.creating venn diagrams..')
     plot_venn(dataset = dataset)
     print(f'==>venn diagrams are created.')
-
 
