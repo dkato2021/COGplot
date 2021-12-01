@@ -1,6 +1,7 @@
 # COGplot
 **遺伝子のアミノ酸データをCOG分類して棒グラフとベン図を出力するスクリプト**
 
+- 
 ## Usage
 ```
 $ python3 COGplot.py -AA  [genes1.fasta [genes2.fasta ...]]
@@ -9,6 +10,10 @@ $ python3 COGplot.py -AA  [genes1.fasta [genes2.fasta ...]]
 $ python3 COGplot.py -AA  [genes1.txt [genes2.txt ...]]
 ```
 
+## 補遺
+- 偽遺伝子がカウントされないようにrpsblastを実行する際のe-valueは1e-15をデフォルトの値にしています。
+
+- ベン図を出力できる入力データの上限は6です。
 ## 出力例
 ![](./images/COG_count.png)
 ![](./images/COG_ratio.png)
