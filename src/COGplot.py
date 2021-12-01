@@ -387,7 +387,7 @@ def get_args():
     #parser.add_argument('-rps' , dest ='rps', nargs='*',
     #                    help = 'path_to_rpsRes', required=True)
     parser.add_argument('-AA' , dest ='AA', nargs='*',
-                        help = 'paths　to your amino acid file of genes', required=True)  
+                        help = 'paths　to your amino acid file of genes(Venn diagram is not output if there are 6 or more files)', required=True)  
     parser.add_argument('-e' , dest ='evalue',
                         default= 1e-25, 
                         help = 'evalue in rpsblast(default:1e-25)')
@@ -578,9 +578,10 @@ def main():
     plot_bar(df = count_data, name ='count')
     plot_bar(df = ratio_data, name ='ratio')
     print(f'==>COG_count.png and COG_ratio.png are created.')
-    print('3.creating venn diagrams..')
-    plot_venn(dataset = dataset)
-    print(f'==>venn diagrams are created.')
+    if len(path_to_rpsRes) <=6:
+        print('3.creating venn diagrams..')
+        plot_venn(dataset = dataset)
+        print(f'==>venn diagrams are created.')
 
                 
 if __name__ == "__main__":
