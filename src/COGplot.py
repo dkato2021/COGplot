@@ -420,9 +420,9 @@ def run_rpsblast(paths_to_proteins = None,
     path_to_rpsRes = []
     for path in paths_to_proteins:
         name = os.path.splitext(os.path.basename(path))[0]
-        subprocess.run(f"rpsblast -query {path} -db {path_to_cogdb} -out ./res_rpsblast/{name}_rpsblastout.txt -evalue {evalue} -outfmt 6"
+        subprocess.run(f"rpsblast -query {path} -db {path_to_cogdb} -out ./res_rpsblast/{name}.txt -evalue {evalue} -outfmt 6"
                        , shell=True)
-        path_to_rpsRes.append(f"./res_rpsblast/{name}_rpsblastout.txt")
+        path_to_rpsRes.append(f"./res_rpsblast/{name}.txt")
     return path_to_rpsRes
 
 def preprocess(rps = None,
