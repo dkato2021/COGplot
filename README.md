@@ -11,9 +11,9 @@ $ python3 COGplot.py -AA  [genes1.txt [genes2.txt ...]]
 ```
 
 ## 補遺
-- 偽遺伝子がカウントされないようにrpsblastを実行する際のe-valueは1e-15をデフォルトの値にしています。
+- rpsblastを実行する際のe-valueは偽遺伝子がカウントされることを防ぐためにデフォルトの値を1e-15にしています。
 
-- ベン図を出力できる入力データの上限は6です。
+- ベン図を出力できる入力データ数の上限は6です。
 ## 出力例
 ![](./images/COG_count.png)
 ![](./images/COG_ratio.png)
