@@ -552,9 +552,12 @@ def main():
     plot_bar(df = count_data, name ='count')
     plot_bar(df = ratio_data, name ='ratio')
     print(f'==>COG_count.png and COG_ratio.png are created.')
-    print('2.creating venn diagrams..')
-    plot_venn(dataset = dataset)
-    print(f'==>venn diagrams are created.')
+    
+    if len(path_to_rpsRes) <=6:
+        print('2.creating venn diagrams..')
+        print('3.creating venn diagrams..')
+        plot_venn(dataset = dataset)
+        print(f'==>venn diagrams are created.')
 
 if __name__ == "__main__":
     main()
