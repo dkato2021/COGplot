@@ -14,3 +14,7 @@ $ python3 COGplot.py -AA  [genes1.txt [genes2.txt ...]]
 ![](./images/COG_ratio.png)
 ![](./images/venn3Diagram.png)
 ![](./images/COGvenn3Diagrams.png)
+![](./images/1.png)
+![](./images/2.png)
+![](./images/3.png)
+![](./images/4.png)
