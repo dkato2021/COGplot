@@ -543,7 +543,7 @@ def plot_venn(dataset = None):
             fig.savefig(f"./out/COGvenn{len(list(dataset.keys()))}Diagrams.png")
                 
             
-if __name__ == "__main__":
+def main():
     print('1.creating barplot..')
     count_data, ratio_data, dataset = get_main_dataset(path_to_rpsRes = get_args().rps,
                                                       path_to_cddid = get_args().cddid,
@@ -556,3 +556,5 @@ if __name__ == "__main__":
     plot_venn(dataset = dataset)
     print(f'==>venn diagrams are created.')
 
+if __name__ == "__main__":
+    main()
