@@ -474,7 +474,7 @@ def get_main_dataset(path_to_rpsRes = None,
                                   cog = cog)
         
         
-        COG_i = out_COG_i[col_name].rename(columns={'cdd_id': f"{col_name}"}).iloc[:, [0, 3]]
+        COG_i = out_COG_i[col_name].rename(columns={'cdd_id': f"{col_name}"}).iloc[:, [0,1,2,3]]
         out_i = pd.DataFrame(sorter(df_i = df_i[col_name], A2Z = A2Z), columns=[f"{col_name}"])
 
         out = pd.concat([out, out_i], axis = 1)
