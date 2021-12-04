@@ -581,11 +581,12 @@ def main():
                                                       path_to_cddid = get_args().cddid,
                                                       path_to_cog = get_args().cog)
 
-    plot_bar(df = count_data, name ='count')
-    plot_bar(df = ratio_data, name ='ratio')
+    if len(get_args().rps) <=10:
+        plot_bar(df = count_data, name ='count')
+        plot_bar(df = ratio_data, name ='ratio')
     print(f'==>COG_count.png and COG_ratio.png are created.')
     CLR_PCA(df = ratio_data)
-    if len(get_args().rps) <=6:
+    if 2 <= len(get_args().rps) <=6:
         print('2.creating venn diagrams..')
         plot_venn(dataset = dataset)
         print(f'==>venn diagrams are created.')
