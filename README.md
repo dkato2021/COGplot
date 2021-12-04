@@ -4,7 +4,8 @@
 - ベン図を出力できる入力データ数の上限は6です。
 - 入力データ数が４以上の場合はベン図の積集合の要素数とその面積を一致させることができていません。
 - CLR -> PCAの図も出力したい
-- 
+from skbio.stats.composition import clr
+from sklearn.decomposition import PCA
 ## Usage
 ```
 $ python3 COGplot.py -AA  [genes1.fasta [genes2.fasta ...]]
