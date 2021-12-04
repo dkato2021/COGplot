@@ -4,7 +4,6 @@ import numpy as np
 import pandas as pd
 import subprocess
 import matplotlib.pyplot as plt
-from tqdm import tqdm
 import matplotlib_venn
 from collections import Counter
 from itertools import chain
