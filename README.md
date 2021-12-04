@@ -8,7 +8,7 @@ from skbio.stats.composition import clr
 from sklearn.decomposition import PCA
 
 **依存**
-- matplotlib_venn
+- matplotlib-venn
 - scikit-bio
 ## Usage
 ```
