@@ -12,6 +12,8 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from matplotlib import colors
 import math
+from skbio.stats.composition import clr
+from sklearn.decomposition import PCA
 
 
 default_colors = [
@@ -515,6 +517,35 @@ def plot_bar(df = None, name = None):
     #plt.show()
     fig.savefig(f"./out/COG_{name}.png")
 
+def CLR_PCA(df = None):#各行にCOG。つまり列方向(縦)に和が１
+    #ゼロ値の保管
+    clr_in = df.iloc[:, 1:] + 1
+    
+    #CLR
+    df_clr = clr(clr_in.T).T#clr関数は行方向に和が１ものしか受け付けない
+    
+    #PCA
+    pca = PCA(n_components=2)
+    _ = pca.fit_transform(df_clr.T)
+    df_pca = pd.DataFrame(_, columns = ["PCA1", "PCA2"])
+    
+    
+    def plot_PCA(df_pca, pca, df):
+        fig = plt.figure(figsize=(10, 10))
+        for x, y, name in zip(df_pca.PCA1, df_pca.PCA2, df.columns[1:]):
+            plt.text(x, y, name)
+        plt.scatter(df_pca.PCA1, df_pca.PCA2, alpha=0.8)
+        for x, y, name in zip(pca.components_[0], pca.components_[1], df.COG):
+            plt.text(x, y, name)
+        plt.scatter(pca.components_[0], pca.components_[1], alpha=0.8)
+        plt.grid()
+        plt.xlabel(f"PC1({(pca.explained_variance_ratio_[0]*100).round(2)}%)")
+        plt.ylabel(f"PC2({(pca.explained_variance_ratio_[1]*100).round(2)}%)")
+        fig.savefig(f"./out/PCA_COG.png")
+        #plt.show()
+    
+    plot_PCA(df_pca, pca, df)
+    
 def plot_or_not(unique_COGs):
     return sum([unique_COG==set() for unique_COG in unique_COGs]) !=len(unique_COGs)
 
@@ -577,6 +608,7 @@ def main():
     plot_bar(df = count_data, name ='count')
     plot_bar(df = ratio_data, name ='ratio')
     print(f'==>COG_count.png and COG_ratio.png are created.')
+    CLR_PCA(df = ratio_data)
     if len(get_args().AA) <=6:
         print('3.creating venn diagrams..')
         plot_venn(dataset = dataset)
@@ -585,3 +617,4 @@ def main():
                 
 if __name__ == "__main__":
     main()
+
