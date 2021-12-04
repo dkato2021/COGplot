@@ -6,6 +6,10 @@
 - CLR -> PCAの図も出力したい
 from skbio.stats.composition import clr
 from sklearn.decomposition import PCA
+
+**依存**
+- matplotlib_venn
+- scikit-bio
 ## Usage
 ```
 $ python3 COGplot.py -AA  [genes1.fasta [genes2.fasta ...]]
