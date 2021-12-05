@@ -517,7 +517,7 @@ def plot_bar(df = None, name = None):
     #plt.show()
     fig.savefig(f"./out/COG_{name}.png")
 
-def CLR_PCA(df = None):#各行にCOG。つまり列方向(縦)に和が１
+def CLR_PCA(df = None):#各行にCOG。
     #ゼロ値の保管
     clr_in = df.iloc[:, 1:] + 1
     
@@ -535,9 +535,10 @@ def CLR_PCA(df = None):#各行にCOG。つまり列方向(縦)に和が１
         for x, y, name in zip(df_pca.PCA1, df_pca.PCA2, df.columns[1:]):
             plt.text(x, y, name)
         plt.scatter(df_pca.PCA1, df_pca.PCA2, alpha=0.8)
-        for x, y, name in zip(pca.components_[0], pca.components_[1], df.COG):
-            plt.text(x, y, name)
-        plt.scatter(pca.components_[0], pca.components_[1], alpha=0.8)
+        
+        #for x, y, name in zip(pca.components_[0], pca.components_[1], df.COG):
+        #    plt.text(x, y, name)
+        #plt.scatter(pca.components_[0], pca.components_[1], alpha=0.8)
         plt.grid()
         plt.xlabel(f"PC1({(pca.explained_variance_ratio_[0]*100).round(2)}%)")
         plt.ylabel(f"PC2({(pca.explained_variance_ratio_[1]*100).round(2)}%)")
@@ -600,15 +601,19 @@ def main():
     path_to_rpsRes = run_rpsblast(paths_to_proteins = get_args().AA, 
                                   path_to_cogdb = get_args().cogdb, 
                                   evalue = get_args().evalue)
-    print('2.creating barplot..')
+    
     count_data, ratio_data, dataset = get_main_dataset(path_to_rpsRes = path_to_rpsRes,
                                                       path_to_cddid = get_args().cddid,
                                                       path_to_cog = get_args().cog)
     if len(get_args().AA) <=10:
+        print('2.creating barplot..')
         plot_bar(df = count_data, name ='count')
         plot_bar(df = ratio_data, name ='ratio')
-    print(f'==>COG_count.png and COG_ratio.png are created.')
-    CLR_PCA(df = ratio_data)
+        print(f'==>COG_count.png and COG_ratio.png are created.')
+    
+    if 2 <= len(get_args().AA):
+        CLR_PCA(df = ratio_data)
+        
     if 2 <= len(get_args().AA) <=6:
         print('3.creating venn diagrams..')
         plot_venn(dataset = dataset)
@@ -617,4 +622,5 @@ def main():
                 
 if __name__ == "__main__":
     main()
+
 
