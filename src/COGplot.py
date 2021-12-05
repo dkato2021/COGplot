@@ -537,7 +537,7 @@ def CLR_PCA(df = None):#各行にCOG。
     
     
     def plot_PCA(df_pca, pca, df):
-        fig = plt.figure(figsize=(10, 10))
+        fig = plt.figure(figsize=(25, 25))
         for x, y, name in zip(df_pca.PCA1, df_pca.PCA2, df.columns[1:]):
             plt.text(x, y, name)
         plt.scatter(df_pca.PCA1, df_pca.PCA2, alpha=0.8)
