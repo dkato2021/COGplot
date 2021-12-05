@@ -385,8 +385,8 @@ def venn6(labels, ax, names=['A', 'B', 'C', 'D', 'E'], **options):
 
 def get_args():
     parser = argparse.ArgumentParser(description='dkato. November, 2021')
-    #parser.add_argument('-rps' , dest ='rps', nargs='*',
-    #                    help = 'path_to_rpsRes', required=True)
+    parser.add_argument('-rps' , dest ='rps', nargs='*',
+                        help = 'path_to_rpsRes', required=True)
     parser.add_argument('-AA' , dest ='AA', nargs='*',
                         help = 'paths　to your amino acid file of genes(Venn diagram is not output if there are 6 or more files)', required=True)  
     parser.add_argument('-e' , dest ='evalue',
@@ -596,15 +596,23 @@ def plot_venn(dataset = None):
             plt.tight_layout()
             fig.savefig(f"./out/COGvenn{len(list(dataset.keys()))}Diagrams.png")
                 
-def main():           
-    print('1.rpsblast now...')
-    path_to_rpsRes = run_rpsblast(paths_to_proteins = get_args().AA, 
-                                  path_to_cogdb = get_args().cogdb, 
-                                  evalue = get_args().evalue)
-    
-    count_data, ratio_data, dataset = get_main_dataset(path_to_rpsRes = path_to_rpsRes,
-                                                      path_to_cddid = get_args().cddid,
-                                                      path_to_cog = get_args().cog)
+def main():    
+    assert get_args().AA != [] and get_args().rps != [], print('rps option and AA option cannot be specified at the same time')
+    if get_args().AA != []:
+        print('1.rpsblast now...')
+        path_to_rpsRes = run_rpsblast(paths_to_proteins = get_args().AA, 
+                                      path_to_cogdb = get_args().cogdb, 
+                                      evalue = get_args().evalue)
+
+        count_data, ratio_data, dataset = get_main_dataset(path_to_rpsRes = path_to_rpsRes,
+                                                          path_to_cddid = get_args().cddid,
+                                                          path_to_cog = get_args().cog)
+    elif get_args().rps != []:
+    print('1.creating barplot..')
+        count_data, ratio_data, dataset = get_main_dataset(path_to_rpsRes = get_args().rps,
+                                                          path_to_cddid = get_args().cddid,
+                                                          path_to_cog = get_args().cog)
+        
     if len(get_args().AA) <=10:
         print('2.creating barplot..')
         plot_bar(df = count_data, name ='count')
@@ -618,8 +626,7 @@ def main():
         print('3.creating venn diagrams..')
         plot_venn(dataset = dataset)
         print(f'==>venn diagrams are created.')
-
-                
+  
 if __name__ == "__main__":
     main()
 
