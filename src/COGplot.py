@@ -391,7 +391,7 @@ def get_args():
                         help = 'evalue in rpsblast(default:1e-25)')
     parser.add_argument('-cogdb' , dest ='cogdb',
                         default= '/home/tmp/db/COG/Cog', 
-                       help = 'path to your cogdb to run rpsblast(default/home/tmp/db/COG/Cog)')    
+                       help = 'path to your cogdb to run rpsblast(default:/home/tmp/db/COG/Cog)')    
     parser.add_argument('-cddid' , dest ='cddid',
                         default= '/home/tmp/db/COG/cdd2cog/cddid_COG.tbl',
                         help = 'path to your cddid_COG.tbl(default:/home/tmp/db/COG/cdd2cog/cddid_COG.tbl)')
@@ -399,11 +399,10 @@ def get_args():
                         default='/home/tmp/db/COG/cdd2cog/cog-20.def.tsv',
                         help = 'path to your cog-20.def.tsv(default:/home/tmp/db/COG/cdd2cog/cog-20.def.tsv)')
     return parser.parse_args()
-#'/Users/daiki/Python/M2/rpsblast/data/cog-20.def.tsv',
-#'/home/tmp/db/COG/cdd2cog/cog-20.def.tsv'
 #'/Users/daiki/Python/M2/rpsblast/data/cddid_COG.tbl',
 #'/home/tmp/db/COG/cdd2cog/cddid_COG.tbl'
-
+#'/Users/daiki/Python/M2/rpsblast/data/cog-20.def.tsv',
+#'/home/tmp/db/COG/cdd2cog/cog-20.def.tsv'
 
 def run_rpsblast(paths_to_proteins = None, 
                  path_to_cogdb = None, 
