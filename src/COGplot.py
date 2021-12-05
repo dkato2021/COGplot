@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os, sys, argparse, warnings, csv
 warnings.filterwarnings('ignore')
 import subprocess
@@ -390,13 +391,13 @@ def get_args():
                         help = 'evalue in rpsblast(default:1e-25)')
     parser.add_argument('-cogdb' , dest ='cogdb',
                         default= '/home/tmp/db/COG/Cog', 
-                       help = 'path to your cogdb(default/home/tmp/db/COG/Cog:)')    
+                       help = 'path to your cogdb to run rpsblast(default/home/tmp/db/COG/Cog)')    
     parser.add_argument('-cddid' , dest ='cddid',
                         default= '/home/tmp/db/COG/cdd2cog/cddid_COG.tbl',
-                        help = 'path to your cddid_COG.tbl(default:/home/tmp/db/COG/Cog)')
+                        help = 'path to your cddid_COG.tbl(default:/home/tmp/db/COG/cdd2cog/cddid_COG.tbl)')
     parser.add_argument('-cog', dest='cog',
                         default='/home/tmp/db/COG/cdd2cog/cog-20.def.tsv',
-                        help = 'path to your cog-20.def.tsv(default:/home/tmp/db/COG/Cog)')
+                        help = 'path to your cog-20.def.tsv(default:/home/tmp/db/COG/cdd2cog/cog-20.def.tsv)')
     return parser.parse_args()
 #'/Users/daiki/Python/M2/rpsblast/data/cog-20.def.tsv',
 #'/home/tmp/db/COG/cdd2cog/cog-20.def.tsv'
@@ -605,7 +606,7 @@ def main():
     assert (get_args().AA is not None and get_args().rps is None) or (get_args().AA is None and get_args().rps is not None), print('rps option and AA option cannot be specified at the same time')
     
     if get_args().AA is not None:
-        print('1.rpsblast now...')
+        print('- rpsblast now...')
         num_files = len(get_args().AA)
         path_to_rpsRes = run_rpsblast(paths_to_proteins = get_args().AA, 
                                       path_to_cogdb = get_args().cogdb, 
@@ -616,14 +617,14 @@ def main():
                                                           path_to_cog = get_args().cog)
 
     elif get_args().rps is not None:
-        print('1.loading data..')
+        print('- loading data..')
         num_files = len(get_args().rps)
         count_data, ratio_data, dataset = get_main_dataset(path_to_rpsRes = get_args().rps,
                                                           path_to_cddid = get_args().cddid,
                                                           path_to_cog = get_args().cog)
 
     if num_files <=10:
-        print('2.creating barplot..')
+        print('- creating barplot..')
         plot_bar(df = count_data, name ='count')
         plot_bar(df = ratio_data, name ='ratio')
         print(f'==>COG_count.png and COG_ratio.png are created.')
@@ -632,7 +633,7 @@ def main():
         CLR_PCA(df = ratio_data)
         
     if 2 <= num_files <=6:
-        print('3.creating venn diagrams..')
+        print('- creating venn diagrams..')
         plot_venn(dataset = dataset)
         print(f'==>venn diagrams are created.')
 
