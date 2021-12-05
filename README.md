@@ -14,7 +14,7 @@
 $ python3 COGplot.py -AA  [genes1.fasta [genes2.fasta ...]]
 
 #rpsblastの結果を入力データとして扱いたい場合
-$ python3 COGplot_rpsblast.py -rps  [genes1.txt [genes2.txt ...]]
+$ python3 COGplot.py -rps  [genes1.txt [genes2.txt ...]]
 ```
 
 ```
