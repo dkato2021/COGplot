@@ -12,7 +12,6 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from matplotlib import colors
 import math
-from skbio.stats.composition import clr
 from sklearn.decomposition import PCA
 
 
@@ -386,9 +385,9 @@ def venn6(labels, ax, names=['A', 'B', 'C', 'D', 'E'], **options):
 def get_args():
     parser = argparse.ArgumentParser(description='dkato. November, 2021')
     parser.add_argument('-rps' , dest ='rps', nargs='*',
-                        help = 'path_to_rpsRes', required=True)
+                        help = 'path_to_rpsRes')
     parser.add_argument('-AA' , dest ='AA', nargs='*',
-                        help = 'paths　to your amino acid file of genes(Venn diagram is not output if there are 6 or more files)', required=True)  
+                        help = 'paths　to your amino acid file of genes(Venn diagram is not output if there are 6 or more files)')
     parser.add_argument('-e' , dest ='evalue',
                         default= 1e-25, 
                         help = 'evalue in rpsblast(default:1e-25)')
@@ -518,11 +517,20 @@ def plot_bar(df = None, name = None):
     fig.savefig(f"./out/COG_{name}.png")
 
 def CLR_PCA(df = None):#各行にCOG。
+    def Myclr(df):
+        def geo_mean(iterable):
+            a = np.array(iterable)
+            return a.prod()**(1.0/len(a))
+        df_clr = pd.DataFrame()
+        for i in range(len(df.index)):
+            tmp = df.iloc[i,:]/geo_mean(df.iloc[i,:])
+            df_clr = pd.concat([df_clr, tmp.map(math.log)], axis=1)
+        return df_clr.T
     #ゼロ値の保管
     clr_in = df.iloc[:, 1:] + 1
     
     #CLR
-    df_clr = clr(clr_in.T).T#clr関数は行方向に和が１ものしか受け付けない
+    df_clr = Myclr(clr_in.T).T#clr関数は行方向に和が１ものしか受け付けない
     
     #PCA
     pca = PCA(n_components=2)
@@ -596,10 +604,12 @@ def plot_venn(dataset = None):
             plt.tight_layout()
             fig.savefig(f"./out/COGvenn{len(list(dataset.keys()))}Diagrams.png")
                 
-def main():    
-    assert get_args().AA != [] and get_args().rps != [], print('rps option and AA option cannot be specified at the same time')
-    if get_args().AA != []:
+def main():
+    assert (get_args().AA is not None and get_args().rps is None) or (get_args().AA is None and get_args().rps is not None), print('rps option and AA option cannot be specified at the same time')
+    
+    if get_args().AA is not None:
         print('1.rpsblast now...')
+        num_files = len(get_args().AA)
         path_to_rpsRes = run_rpsblast(paths_to_proteins = get_args().AA, 
                                       path_to_cogdb = get_args().cogdb, 
                                       evalue = get_args().evalue)
@@ -607,26 +617,28 @@ def main():
         count_data, ratio_data, dataset = get_main_dataset(path_to_rpsRes = path_to_rpsRes,
                                                           path_to_cddid = get_args().cddid,
                                                           path_to_cog = get_args().cog)
-    elif get_args().rps != []:
-    print('1.creating barplot..')
+
+    elif get_args().rps is not None:
+        print('1.loading data..')
+        num_files = len(get_args().rps)
         count_data, ratio_data, dataset = get_main_dataset(path_to_rpsRes = get_args().rps,
                                                           path_to_cddid = get_args().cddid,
                                                           path_to_cog = get_args().cog)
-        
-    if len(get_args().AA) <=10:
+
+    if num_files <=10:
         print('2.creating barplot..')
         plot_bar(df = count_data, name ='count')
         plot_bar(df = ratio_data, name ='ratio')
         print(f'==>COG_count.png and COG_ratio.png are created.')
     
-    if 2 <= len(get_args().AA):
+    if 100 <= num_files:
         CLR_PCA(df = ratio_data)
         
-    if 2 <= len(get_args().AA) <=6:
+    if 2 <= num_files <=6:
         print('3.creating venn diagrams..')
         plot_venn(dataset = dataset)
         print(f'==>venn diagrams are created.')
-  
+
 if __name__ == "__main__":
     main()
 
