@@ -3,13 +3,12 @@
 - rpsblastを実行する際のe-valueは偽遺伝子がカウントされることを防ぐためにデフォルトの値を1e-25にしています。
 - ベン図を出力できる入力データ数の上限は6です。
 - 入力データ数が４以上の場合はベン図の積集合の要素数とその面積を一致させることができていません。
-- CLR -> PCAの図も出力したい
-from skbio.stats.composition import clr
-from sklearn.decomposition import PCA
+- 入力データ数が100を超える場合はCLR -> PCAの図も出力されます。
+
 
 **依存**
 - matplotlib-venn
-- scikit-bio
+
 ## Usage
 ```
 $ python3 COGplot.py -AA  [genes1.fasta [genes2.fasta ...]]
