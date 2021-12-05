@@ -631,7 +631,7 @@ def main():
         plot_bar(df = ratio_data, name ='ratio')
         print(f'==>COG_count.png and COG_ratio.png are created.')
     
-    if 100 <= num_files:
+    if 2 <= num_files:
         CLR_PCA(df = ratio_data)
         
     if 2 <= num_files <=6:
