@@ -16,7 +16,19 @@ $ python3 COGplot.py -AA  [genes1.fasta [genes2.fasta ...]]
 #rpsblastの結果を入力データとして扱いたい場合
 $ python3 COGplot.py -rps  [genes1.txt [genes2.txt ...]]
 ```
-
+## optional arguments
+```
+-h, --help            show this help message and exit
+-rps [RPS [RPS ...]]  path_to_rpsRes
+-AA [AA [AA ...]]     paths　to your amino acid file of genes(Venn diagram is
+                      not output if there are 6 or more files)
+-e EVALUE             evalue in rpsblast(default:1e-25)
+-cogdb COGDB          path to your cogdb(default/home/tmp/db/COG/Cog:)
+-cddid CDDID          path to your
+                      cddid_COG.tbl(default:/home/tmp/db/COG/Cog)
+-cog COG              path to your
+                      cog-20.def.tsv(default:/home/tmp/db/COG/Cog)
+```
 ## 出力例
 ![](./images/COG_count.png)
 ![](./images/COG_ratio.png)
