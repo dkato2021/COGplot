@@ -1,19 +1,16 @@
 import os, sys, argparse, warnings, csv
 warnings.filterwarnings('ignore')
+import subprocess
 import numpy as np
 import pandas as pd
-import subprocess
-import matplotlib.pyplot as plt
-import matplotlib_venn
-from collections import Counter
-from itertools import chain
-from collections import Iterable
+from sklearn.decomposition import PCA
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from matplotlib import colors
+import matplotlib_venn
 import math
-from sklearn.decomposition import PCA
-
+from itertools import chain
+from collections import Counter, Iterable
 
 default_colors = [
     # r, g, b, a
