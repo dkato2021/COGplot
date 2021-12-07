@@ -27,8 +27,8 @@ $ python3 COGplot.py -rps  [genes1.txt [genes2.txt ...]]
   -cog COG              path to your cog-20.def.tsv(default:/home/tmp/db/COG/cdd2cog/cog-20.def.tsv)
 ```
 ## 出力例
-|  GCF_000024905.1_ASM2490v1_translated_cds  |  CDD  |COG  |Group  |
-| ---- | ---- |
+|  GCF_000024905.1_ASM2490v1_translated_cds  |  CDD  | COG  |Group  |
+| ---- ---- ---- ---- ---- ---- ---- ---- |---- ----  ---- |---- |
 |  NC_013522.1_prot_WP_164925053.1_1  |  CDD:223666  | COG0593  | L |
 |  NC_013522.1_prot_WP_012868759.1_2  |  CDD:223665  | COG0592  | L  |
 
