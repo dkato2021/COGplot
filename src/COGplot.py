@@ -511,7 +511,7 @@ def plot_bar(df = None, name = None):
     plt.legend(legend)
     plt.xticks(x, labels)
     #plt.show()
-    fig.savefig(f"./out/COG_{name}.png")
+    fig.savefig(f"./out/COG_{name}.pdf")
 
 def CLR_PCA(df = None):#各行にCOG。
     def Myclr(df):
@@ -547,7 +547,7 @@ def CLR_PCA(df = None):#各行にCOG。
         plt.grid()
         plt.xlabel(f"PC1({(pca.explained_variance_ratio_[0]*100).round(2)}%)")
         plt.ylabel(f"PC2({(pca.explained_variance_ratio_[1]*100).round(2)}%)")
-        fig.savefig(f"./out/PCA_COG.png")
+        fig.savefig(f"./out/PCA_COG.pdf")
         #plt.show()
     
     plot_PCA(df_pca, pca, df)
@@ -584,7 +584,7 @@ def plot_venn(dataset = None):
 
     venn_func(dataset, unique_COG, list(dataset.keys()), ax)
     ax.set_title('All genes')  
-    fig.savefig(f"./out/venn{len(list(dataset.keys()))}Diagrams.png")
+    fig.savefig(f"./out/venn{len(list(dataset.keys()))}Diagrams.pdf")
 
     #2
     fig = plt.figure(figsize=(30,40))
@@ -599,7 +599,7 @@ def plot_venn(dataset = None):
             venn_func(dataset, unique_COG, list(dataset.keys()), ax)
             ax.set_title(f'{alphabet}')
             plt.tight_layout()
-            fig.savefig(f"./out/COGvenn{len(list(dataset.keys()))}Diagrams.png")
+            fig.savefig(f"./out/COGvenn{len(list(dataset.keys()))}Diagrams.pdf")
                 
 def main():
     assert (get_args().AA is not None and get_args().rps is None) or (get_args().AA is None and get_args().rps is not None), print('rps option and AA option cannot be specified at the same time')
@@ -626,7 +626,7 @@ def main():
         print('- creating barplot..')
         plot_bar(df = count_data, name ='count')
         plot_bar(df = ratio_data, name ='ratio')
-        print(f'==>COG_count.png and COG_ratio.png are created.')
+        print(f'==>COG_count.pdf and COG_ratio.pdf are created.')
     
     if 2 <= num_files:
         CLR_PCA(df = ratio_data)
