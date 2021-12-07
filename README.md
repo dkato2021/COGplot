@@ -28,9 +28,8 @@ $ python3 COGplot.py -rps  [genes1.txt [genes2.txt ...]]
 ```
 ## 出力例
 
-
-![image](https://user-images.githubusercontent.com/78598272/144970110-b199816e-fec0-471f-891a-18ea0daaf967.png)
-
+![](./images/annotation.png)
+![](./images/PCA_COG.png)
 ![](./images/COG_count.png)
 ![](./images/COG_ratio.png)
 ![](./images/venn3Diagram.png)
