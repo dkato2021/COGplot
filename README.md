@@ -36,6 +36,5 @@ $ python3 COGplot.py -rps  [genes1.txt [genes2.txt ...]]
 ![](./images/2.png)
 ![](./images/3.png)
 ![](./images/4.png)
-
-![](./images/annotation.png)
 ![](./images/PCA_COG.png)
+![](./images/annotation.png)
