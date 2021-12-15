@@ -23,10 +23,10 @@ def get_args():
                         default= 1e-25, 
                         help = 'evalue in rpsblast(default:1e-25)')
     parser.add_argument('-s1' , dest ='s1',
-                        default= 10, 
+                        default= 10, type = int,
                         help = 'graph size of venn diagrams(default:10)')
     parser.add_argument('-s2' , dest ='s2',
-                        default= 10, 
+                        default= 10, type = int,
                         help = 'graph size of PCA plot(default:10)')
     parser.add_argument('-cogdb' , dest ='cogdb',
                         default= '/home/tmp/db/COG/Cog', 
@@ -637,11 +637,11 @@ def main():
         print(f'==>COG_count.pdf and COG_ratio.pdf are created.')
     
     if 2 <= num_files:
-        CLR_PCA(df = ratio_data, size = int(get_args().s2))
+        CLR_PCA(df = ratio_data, size = get_args().s2)
         
     if 2 <= num_files <=6:
         print('- creating venn diagrams..')
-        plot_venn(dataset = dataset, size = int(get_args().s1))
+        plot_venn(dataset = dataset, size = get_args().s1)
         print(f'==>venn diagrams are created.')
 
 if __name__ == "__main__":
