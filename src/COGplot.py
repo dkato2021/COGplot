@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import os, sys, argparse, warnings, csv
 warnings.filterwarnings('ignore')
 import subprocess
