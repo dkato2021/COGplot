@@ -13,6 +13,36 @@ import math
 from itertools import chain
 from collections import Counter, Iterable
 
+def get_args():
+    parser = argparse.ArgumentParser(description='dkato. November, 2021')
+    parser.add_argument('-rps' , dest ='rps', nargs='*',
+                        help = 'path to your results of rpsblast')
+    parser.add_argument('-AA' , dest ='AA', nargs='*',
+                        help = 'paths　to your amino acids files of genes(Venn diagram is not output if there are 6 or more files)')
+    parser.add_argument('-e' , dest ='evalue',
+                        default= 1e-25, 
+                        help = 'evalue in rpsblast(default:1e-25)')
+    parser.add_argument('-s1' , dest ='s1',
+                        default= 10, 
+                        help = 'graph size of venn diagrams(default:10)')
+    parser.add_argument('-s2' , dest ='s2',
+                        default= 10, 
+                        help = 'graph size of PCA plot(default:10)')
+    parser.add_argument('-cogdb' , dest ='cogdb',
+                        default= '/home/tmp/db/COG/Cog', 
+                       help = 'path to your cogdb to run rpsblast(default:/home/tmp/db/COG/Cog)')    
+    parser.add_argument('-cddid' , dest ='cddid',
+                        default= '/home/tmp/db/COG/cdd2cog/cddid_COG.tbl',
+                        help = 'path to your cddid_COG.tbl(default:/home/tmp/db/COG/cdd2cog/cddid_COG.tbl)')
+    parser.add_argument('-cog', dest='cog',
+                        default='/home/tmp/db/COG/cdd2cog/cog-20.def.tsv',
+                        help = 'path to your cog-20.def.tsv(default:/home/tmp/db/COG/cdd2cog/cog-20.def.tsv)')
+    return parser.parse_args()
+#'/Users/daiki/Python/M2/rpsblast/data/cddid_COG.tbl',
+#'/home/tmp/db/COG/cdd2cog/cddid_COG.tbl'
+#'/Users/daiki/Python/M2/rpsblast/data/cog-20.def.tsv',
+#'/home/tmp/db/COG/cdd2cog/cog-20.def.tsv'
+
 default_colors = [
     # r, g, b, a
     [92, 192, 98, 0.5],
@@ -380,29 +410,7 @@ def venn6(labels, ax, names=['A', 'B', 'C', 'D', 'E'], **options):
     return fig#, ax
 
 
-def get_args():
-    parser = argparse.ArgumentParser(description='dkato. November, 2021')
-    parser.add_argument('-rps' , dest ='rps', nargs='*',
-                        help = 'path to your results of rpsblast')
-    parser.add_argument('-AA' , dest ='AA', nargs='*',
-                        help = 'paths　to your amino acids files of genes(Venn diagram is not output if there are 6 or more files)')
-    parser.add_argument('-e' , dest ='evalue',
-                        default= 1e-25, 
-                        help = 'evalue in rpsblast(default:1e-25)')
-    parser.add_argument('-cogdb' , dest ='cogdb',
-                        default= '/home/tmp/db/COG/Cog', 
-                       help = 'path to your cogdb to run rpsblast(default:/home/tmp/db/COG/Cog)')    
-    parser.add_argument('-cddid' , dest ='cddid',
-                        default= '/home/tmp/db/COG/cdd2cog/cddid_COG.tbl',
-                        help = 'path to your cddid_COG.tbl(default:/home/tmp/db/COG/cdd2cog/cddid_COG.tbl)')
-    parser.add_argument('-cog', dest='cog',
-                        default='/home/tmp/db/COG/cdd2cog/cog-20.def.tsv',
-                        help = 'path to your cog-20.def.tsv(default:/home/tmp/db/COG/cdd2cog/cog-20.def.tsv)')
-    return parser.parse_args()
-#'/Users/daiki/Python/M2/rpsblast/data/cddid_COG.tbl',
-#'/home/tmp/db/COG/cdd2cog/cddid_COG.tbl'
-#'/Users/daiki/Python/M2/rpsblast/data/cog-20.def.tsv',
-#'/home/tmp/db/COG/cdd2cog/cog-20.def.tsv'
+
 
 def run_rpsblast(paths_to_proteins = None, 
                  path_to_cogdb = None, 
@@ -513,7 +521,7 @@ def plot_bar(df = None, name = None):
     #plt.show()
     fig.savefig(f"./out/COG_{name}.pdf")
 
-def CLR_PCA(df = None):#各行にCOG。
+def CLR_PCA(df = None, size = None):#各行にCOG。
     def Myclr(df):
         def geo_mean(iterable):
             a = np.array(iterable)
@@ -536,7 +544,7 @@ def CLR_PCA(df = None):#各行にCOG。
     
     
     def plot_PCA(df_pca, pca, df):
-        fig = plt.figure(figsize=(25, 25))
+        fig = plt.figure(figsize=(size *2.5, size * 2.5))
         for x, y, name in zip(df_pca.PCA1, df_pca.PCA2, df.columns[1:]):
             plt.text(x, y, name)
         plt.scatter(df_pca.PCA1, df_pca.PCA2, alpha=0.8)
@@ -570,7 +578,7 @@ def venn_func(dataset, unique_COG, labels, ax):
     else:
         sys.exit()
             
-def plot_venn(dataset = None):
+def plot_venn(dataset = None, size = None):
     A2Z = [chr(i) for i in range(65, 65+26)]
 
     #1
@@ -587,7 +595,7 @@ def plot_venn(dataset = None):
     fig.savefig(f"./out/venn{len(list(dataset.keys()))}Diagrams.pdf")
 
     #2
-    fig = plt.figure(figsize=(30,40))
+    fig = plt.figure(figsize=(size * 3, size * 4))
     for i, alphabet in enumerate(A2Z):
         unique_COG = []
         for j in range(len(dataset.keys())):
@@ -629,11 +637,11 @@ def main():
         print(f'==>COG_count.pdf and COG_ratio.pdf are created.')
     
     if 2 <= num_files:
-        CLR_PCA(df = ratio_data)
+        CLR_PCA(df = ratio_data, size = get_args().s2)
         
     if 2 <= num_files <=6:
         print('- creating venn diagrams..')
-        plot_venn(dataset = dataset)
+        plot_venn(dataset = dataset, size = get_args().s1)
         print(f'==>venn diagrams are created.')
 
 if __name__ == "__main__":
