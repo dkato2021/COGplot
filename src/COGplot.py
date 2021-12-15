@@ -544,7 +544,7 @@ def CLR_PCA(df = None, size = None):#各行にCOG。
     
     
     def plot_PCA(df_pca, pca, df):
-        fig = plt.figure(figsize=(size *2.5, size * 2.5))
+        fig = plt.figure(figsize=(size *2, size * 2))
         for x, y, name in zip(df_pca.PCA1, df_pca.PCA2, df.columns[1:]):
             plt.text(x, y, name)
         plt.scatter(df_pca.PCA1, df_pca.PCA2, alpha=0.8)
@@ -637,11 +637,11 @@ def main():
         print(f'==>COG_count.pdf and COG_ratio.pdf are created.')
     
     if 2 <= num_files:
-        CLR_PCA(df = ratio_data, size = get_args().s2)
+        CLR_PCA(df = ratio_data, size = int(get_args().s2))
         
     if 2 <= num_files <=6:
         print('- creating venn diagrams..')
-        plot_venn(dataset = dataset, size = get_args().s1)
+        plot_venn(dataset = dataset, size = int(get_args().s1))
         print(f'==>venn diagrams are created.')
 
 if __name__ == "__main__":
