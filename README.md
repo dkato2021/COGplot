@@ -9,6 +9,12 @@
 
 **依存**
 - matplotlib-venn
+## Installation
+```
+$ pip install matplotlib-venn
+$ git clone 
+$ chod u+x COGplot.py
+```
 
 ## Usage
 ```
