@@ -6,6 +6,7 @@
 - 入力データ数が４以上の場合はベン図の積集合の要素数とその面積は一致しません。
 - PCAの入力にはCOG分類結果の比率データをCLR変換したものを使用しています。
 - Shebang追加しました
+- グラフサイズも変更できるようにしました。（動作未確認）
 
 **依存**
 - matplotlib-venn
@@ -23,7 +24,9 @@ $ python3 COGplot.py -rps  [genes1.txt [genes2.txt ...]]
   -rps [RPS [RPS ...]]  path to your results of rpsblast
   -AA [AA [AA ...]]     paths　to your amino acids files of genes(Venn diagram is not output if there are 6 or more files)
   -e EVALUE             evalue in rpsblast(default:1e-25)
-  -cogdb COGDB          path to your cogdb to run rpsblast(default/home/tmp/db/COG/Cog)
+  -s1 S1                graph size of venn diagrams(default:10)
+  -s2 S2                graph size of PCA plot(default:10)
+  -cogdb COGDB          path to your cogdb to run rpsblast(default:/home/tmp/db/COG/Cog)
   -cddid CDDID          path to your cddid_COG.tbl(default:/home/tmp/db/COG/cdd2cog/cddid_COG.tbl)
   -cog COG              path to your cog-20.def.tsv(default:/home/tmp/db/COG/cdd2cog/cog-20.def.tsv)
 ```
