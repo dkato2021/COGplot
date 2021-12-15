@@ -18,10 +18,10 @@ $ chmod u+x COGplot.py
 
 ## Usage
 ```
-$ python3 COGplot.py -AA  [genes1.fasta [genes2.fasta ...]]
+$ COGplot.py -AA  [genes1.fasta [genes2.fasta ...]]
 
 #rpsblastの結果を入力データとして扱いたい場合
-$ python3 COGplot.py -rps  [genes1.txt [genes2.txt ...]]
+$ COGplot.py -rps  [genes1.txt [genes2.txt ...]]
 ```
 ## optional arguments
 ```
