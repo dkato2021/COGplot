@@ -1,3 +1,2 @@
 rpsblast
 matplotlib-venn
-scikit-bio
