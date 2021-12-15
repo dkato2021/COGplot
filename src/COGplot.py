@@ -24,10 +24,10 @@ def get_args():
                         help = 'evalue in rpsblast(default:1e-25)')
     parser.add_argument('-s1' , dest ='s1',
                         default= 10, type = int,
-                        help = 'graph size of venn diagrams(default:10)')
+                        help = 'specify a integer value: graph size of venn diagrams(default:10)')
     parser.add_argument('-s2' , dest ='s2',
                         default= 10, type = int,
-                        help = 'graph size of PCA plot(default:10)')
+                        help = 'specify a integer value: graph size of PCA plot(default:10)')
     parser.add_argument('-cogdb' , dest ='cogdb',
                         default= '/home/tmp/db/COG/Cog', 
                        help = 'path to your cogdb to run rpsblast(default:/home/tmp/db/COG/Cog)')    
