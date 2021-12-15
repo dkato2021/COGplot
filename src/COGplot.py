@@ -610,8 +610,7 @@ def plot_venn(dataset = None, size = None):
             fig.savefig(f"./out/COGvenn{len(list(dataset.keys()))}Diagrams.pdf")
                 
 def main():
-    assert (get_args().AA is not None and get_args().rps is None) or (get_args().AA is None and get_args().rps is not None), print('rps option and AA option cannot be specified at the same time')
-    
+ 
     if get_args().AA is not None:
         print('- rpsblast now...')
         num_files = len(get_args().AA)
