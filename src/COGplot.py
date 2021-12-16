@@ -545,19 +545,24 @@ def CLR_PCA(df = None, size = None):#各行にCOG。
     
     def plot_PCA(df_pca, pca, df):
         fig = plt.figure(figsize=(size *2, size * 2))
+        ax1 = fig.subplots()
+        ax2 = ax1.twiny().twinx()
         for x, y, name in zip(df_pca.PCA1, df_pca.PCA2, df.columns[1:]):
-            plt.text(x, y, name)
-        plt.scatter(df_pca.PCA1, df_pca.PCA2, alpha=0.8)
-        
-        #for x, y, name in zip(pca.components_[0], pca.components_[1], df.COG):
-        #    plt.text(x, y, name)
-        #plt.scatter(pca.components_[0], pca.components_[1], alpha=0.8)
-        plt.grid()
-        plt.xlabel(f"PC1({(pca.explained_variance_ratio_[0]*100).round(2)}%)")
-        plt.ylabel(f"PC2({(pca.explained_variance_ratio_[1]*100).round(2)}%)")
+            ax1.text(x, y, name)
+        ax1.scatter(df_pca.PCA1, df_pca.PCA2, alpha=0.8)
+        ax1.grid()
+        ax1.set_xlabel(f"PC1({(pca.explained_variance_ratio_[0]*100).round(2)}%)")
+        ax1.set_ylabel(f"PC2({(pca.explained_variance_ratio_[1]*100).round(2)}%)")
         fig.savefig(f"./out/PCA_COG.pdf")
-        #plt.show()
-    
+
+
+        for x, y, name in zip(pca.components_[0], pca.components_[1], df.COG):
+            ax2.text(x, y, name)
+            ax2.arrow(x=0,y=0, dx=x, dy=y,
+                     width=.0001, length_includes_head=True,color='r')
+        ax2.scatter(pca.components_[0],  pca.components_[1], alpha=0.8, color='r')
+        fig.savefig(f"./out/PCA_COG_withLoadingFactor.png")
+
     plot_PCA(df_pca, pca, df)
     
 def plot_or_not(unique_COGs):
