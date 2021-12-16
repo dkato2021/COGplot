@@ -546,7 +546,7 @@ def CLR_PCA(df = None, size = None):#各行にCOG。
     def plot_PCA(df_pca, pca, df):
         fig = plt.figure(figsize=(size *2, size * 2))
         ax1 = fig.subplots()
-        ax2 = ax1.twiny().twinx()
+        
         for x, y, name in zip(df_pca.PCA1, df_pca.PCA2, df.columns[1:]):
             ax1.text(x, y, name)
         ax1.scatter(df_pca.PCA1, df_pca.PCA2, alpha=0.8)
@@ -555,13 +555,13 @@ def CLR_PCA(df = None, size = None):#各行にCOG。
         ax1.set_ylabel(f"PC2({(pca.explained_variance_ratio_[1]*100).round(2)}%)")
         fig.savefig(f"./out/PCA_COG.pdf")
 
-
+        ax2 = ax1.twiny().twinx()
         for x, y, name in zip(pca.components_[0], pca.components_[1], df.COG):
             ax2.text(x, y, name)
             ax2.arrow(x=0,y=0, dx=x, dy=y,
                      width=.0001, length_includes_head=True,color='r')
         ax2.scatter(pca.components_[0],  pca.components_[1], alpha=0.8, color='r')
-        fig.savefig(f"./out/PCA_COG_withLoadingFactor.png")
+        fig.savefig(f"./out/PCA_COG_withLoadingFactor.pdf")
 
     plot_PCA(df_pca, pca, df)
     
@@ -641,8 +641,9 @@ def main():
         print(f'==>COG_count.pdf and COG_ratio.pdf are created.')
     
     if 2 <= num_files:
+        print('- plotting PCA..')
         CLR_PCA(df = ratio_data, size = get_args().s2)
-        
+        print(f'==>PCA_COG.pdf and PCA_COGwithLoadingFactor.pdf are created.')
     if 2 <= num_files <=6:
         print('- creating venn diagrams..')
         plot_venn(dataset = dataset, size = get_args().s1)
@@ -650,5 +651,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
