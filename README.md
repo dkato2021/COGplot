@@ -34,6 +34,11 @@ $ COGplot.py -rps  [genes1.txt [genes2.txt ...]]
   -cddid CDDID          path to your cddid_COG.tbl(default:/home/tmp/db/COG/cdd2cog/cddid_COG.tbl)
   -cog COG              path to your cog-20.def.tsv(default:/home/tmp/db/COG/cdd2cog/cog-20.def.tsv)
 ```
+
+##
+[図の見方](https://statistics.co.jp/reference/software_R/statR_9_principal.pdf)
+
+![](./images/x.png)
 ## 出力例
 
 ![](./images/COG_count.png)
