@@ -38,6 +38,9 @@ $ COGplot.py -rps  [genes1.txt [genes2.txt ...]]
 ## [図の見方](https://statistics.co.jp/reference/software_R/statR_9_principal.pdf)
 
 ![](./images/X.png)
+参考文献
+- https://statistics.co.jp/reference/software_R/statR_9_principal.pdf
+
 ## 出力例
 
 ![](./images/COG_count.png)
