@@ -35,10 +35,9 @@ $ COGplot.py -rps  [genes1.txt [genes2.txt ...]]
   -cog COG              path to your cog-20.def.tsv(default:/home/tmp/db/COG/cdd2cog/cog-20.def.tsv)
 ```
 
-##
-[図の見方](https://statistics.co.jp/reference/software_R/statR_9_principal.pdf)
+## [図の見方](https://statistics.co.jp/reference/software_R/statR_9_principal.pdf)
 
-![](./images/x.png)
+![](./images/X.png)
 ## 出力例
 
 ![](./images/COG_count.png)
