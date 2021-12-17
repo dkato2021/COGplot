@@ -20,8 +20,8 @@ def get_args():
     parser.add_argument('-AA' , dest ='AA', nargs='*',
                         help = 'paths　to your amino acids files of genes(Venn diagram is not output if there are 6 or more files)')
     parser.add_argument('-e' , dest ='evalue',
-                        default= 1e-24, 
-                        help = 'evalue in rpsblast(default:1e-24)')
+                        default= 1e-28, 
+                        help = 'evalue in rpsblast(default:1e-28)')
     parser.add_argument('-s1' , dest ='s1',
                         default= 10, type = int,
                         help = 'specify a integer value: graph size of venn diagrams(default:10)')
