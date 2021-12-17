@@ -27,7 +27,7 @@ $ COGplot.py -rps  [genes1.txt [genes2.txt ...]]
   -h, --help            show this help message and exit
   -rps [RPS [RPS ...]]  path to your results of rpsblast
   -AA [AA [AA ...]]     paths　to your amino acids files of genes(Venn diagram is not output if there are 6 or more files)
-  -e EVALUE             evalue in rpsblast(default:1e-24)
+  -e EVALUE             evalue in rpsblast(default:1e-28)
   -s1 S1                specify a integer value: graph size of venn diagrams(default:10)
   -s2 S2                specify a integer value: graph size of PCA plot(default:10)
   -cogdb COGDB          path to your cogdb to run rpsblast(default:/home/tmp/db/COG/Cog)
