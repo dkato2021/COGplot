@@ -560,7 +560,7 @@ def CLR_PCA(df = None, size = None):#各行にCOG。
             ax2.text(x, y, name)
             ax2.arrow(x=0,y=0, dx=x, dy=y,
                      width=.0001, length_includes_head=True,color='r')
-        #ax2.scatter(pca.components_[0],  pca.components_[1], alpha=0.8, color='r')
+        ax2.scatter(pca.components_[0],  pca.components_[1], alpha=0, color='r')
         fig.savefig(f"./out/PCA_COG_withLoadingFactor.pdf")
 
     plot_PCA(df_pca, pca, df)
@@ -651,6 +651,5 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
 
