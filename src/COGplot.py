@@ -613,7 +613,24 @@ def plot_venn(dataset = None, size = None):
             ax.set_title(f'{alphabet}')
             plt.tight_layout()
             fig.savefig(f"./out/COGvenn{len(list(dataset.keys()))}Diagrams.pdf")
-                
+    
+    # コードが少し汚いです。
+    unique_COG = []
+    for j in range(len(dataset.keys())):
+        x = dataset[list(dataset.keys())[j]]
+        unique_COG.append(set(x['COG'].unique()))
+        
+    eigengene = {}
+    _ = unique_COG
+    tmp = list(dataset.keys())
+    eigengene[f"{tmp[0]}_eigengene"] = list(_[0])
+    for i in range(1, len(tmp)):
+        eigengene[f"{tmp[0]}_eigengene"] = list( set(eigengene[f"{tmp[0]}_eigengene"]) - set(list(_[i])))
+    Group = []
+    for i in range(len(eigengene[f"{tmp[0]}_eigengene"])):
+        Group+=set(list(dataset[f"{tmp[0]}"]['Group'][dataset[f"{tmp[0]}"].COG==eigengene[f"{tmp[0]}_eigengene"][i]]))
+
+    pd.DataFrame([eigengene[f"{tmp[0]}_eigengene"], Group], index=[f"{tmp[0]}_eigengene", 'Group']).T.to_csv(f"./out/COGdata/{tmp[0]}_eigengene.csv")
 def main():
  
     if get_args().AA is not None:
