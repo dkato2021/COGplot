@@ -625,11 +625,17 @@ def plot_venn(dataset = None, size = None):
     eigengene[f"{tmp[0]}_eigengene"] = list(_[0])
     for i in range(1, len(tmp)):
         eigengene[f"{tmp[0]}_eigengene"] = list( set(eigengene[f"{tmp[0]}_eigengene"]) - set(list(_[i])))
-    Group = []
-    for i in range(len(eigengene[f"{tmp[0]}_eigengene"])):
-        Group+=set(list(dataset[f"{tmp[0]}"]['Group'][dataset[f"{tmp[0]}"].COG==eigengene[f"{tmp[0]}_eigengene"][i]]))
 
-    pd.DataFrame([eigengene[f"{tmp[0]}_eigengene"], Group], index=[f"{tmp[0]}_eigengene", 'Group']).T.to_csv(f"./out_{get_args().evalue}/COGdata/{tmp[0]}_eigengene.csv")
+    Group = []
+    name =[]
+    for i in range(len(eigengene[f"{tmp[0]}_eigengene"])):
+        x = dataset[f"{tmp[0]}"].COG==eigengene[f"{tmp[0]}_eigengene"][i]
+        Group+=set(list(dataset[f"{tmp[0]}"]['Group'][x]))
+        #assert len(set(list(dataset[f"{tmp[0]}"]['cdd_id'][x])))==1, i
+        name+=set([list(dataset[f"{tmp[0]}"]['cdd_id'][x])[0]])
+    
+pd.DataFrame([eigengene[f"{tmp[0]}_eigengene"], Group, name],
+             index=[f"{tmp[0]}_eigengene", 'Group', 'one of name']).T.to_csv(f"./out/COGdata/{tmp[0]}_eigengene.csv")
 def main():
  
     if get_args().AA is not None:
