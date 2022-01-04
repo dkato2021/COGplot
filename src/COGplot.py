@@ -437,7 +437,7 @@ def preprocess(rps = None,
 
     cddid["CDD"] = "CDD:" + cddid["CDD"].astype(str)
     _ = pd.merge(rps, cddid, on = ["CDD"]).iloc[:, [0, 1, 12]]
-    _df = pd.merge(_, cog, on = ["COG"]).iloc[:, [0, 1, 2, 3]]
+    _df = pd.merge(_, cog, on = ["COG"]).iloc[:, [0, 1, 2, 3, 4, 5]]
     return _df, dict(Counter("".join(_df['Group'])))
 
 def sorter(df_i = None,
@@ -470,8 +470,8 @@ def get_main_dataset(path_to_rpsRes = None,
 
         cddid = pd.read_table(path_to_cddid, names=["CDD", "COG", "a", "b", "c"])
 
-        cog = pd.read_table(path_to_cog, names=["COG", "Group", "C3",
-                                         "D3", "E3", "F3", "G3"], encoding='cp1252')
+        cog = pd.read_table(path_to_cog, names=["COG", "Group", "gene_name",
+                                         "gene", "E3", "F3", "G3"], encoding='cp1252')
         
         col_name = os.path.splitext(os.path.basename(path))[0]#[:-len('_rpsblastout')]
         #processing
@@ -615,6 +615,7 @@ def plot_venn(dataset = None, size = None):
             plt.tight_layout()
             fig.savefig(f"./out_{get_args().evalue}/COGvenn{len(list(dataset.keys()))}Diagrams.pdf")
 
+    #少しコードが汚い
     unique_COG = []
     for j in range(len(dataset.keys())):
         x = dataset[list(dataset.keys())[j]]
@@ -627,14 +628,16 @@ def plot_venn(dataset = None, size = None):
         eigengene[f"{tmp[0]}_eigengene"] = list( set(eigengene[f"{tmp[0]}_eigengene"]) - set(list(_[i])))
 
     Group = []
-    name =[]
+    name, gene, gene_name =[], [], [] 
     for i in range(len(eigengene[f"{tmp[0]}_eigengene"])):
         x = dataset[f"{tmp[0]}"].COG==eigengene[f"{tmp[0]}_eigengene"][i]
         Group+=set(list(dataset[f"{tmp[0]}"]['Group'][x]))
         #assert len(set(list(dataset[f"{tmp[0]}"]['cdd_id'][x])))==1, i
         name+=set([list(dataset[f"{tmp[0]}"]['cdd_id'][x])[0]])
-    
-    pd.DataFrame([eigengene[f"{tmp[0]}_eigengene"], Group, name], index=[f"{tmp[0]}_eigengene", 'Group', 'one of name']).T.to_csv(f"./out_{get_args().evalue}/COGdata/{tmp[0]}_eigengene.csv")
+        gene+=set(list(dataset[f"{tmp[0]}"]['gene'][x]))
+        gene_name+=set(list(dataset[f"{tmp[0]}"]['gene_name'][x]))
+    pd.DataFrame([eigengene[f"{tmp[0]}_eigengene"], gene, gene_name, Group, name],
+             index=[f"{tmp[0]}_eigengene", "gene", "gene name", 'Group', 'one of the names']).T.to_csv(f"./out_{get_args().evalue}/COGdata/{tmp[0]}_eigengene.csv")
 def main():
  
     if get_args().AA is not None:
