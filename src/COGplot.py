@@ -634,8 +634,7 @@ def plot_venn(dataset = None, size = None):
         #assert len(set(list(dataset[f"{tmp[0]}"]['cdd_id'][x])))==1, i
         name+=set([list(dataset[f"{tmp[0]}"]['cdd_id'][x])[0]])
     
-pd.DataFrame([eigengene[f"{tmp[0]}_eigengene"], Group, name],
-             index=[f"{tmp[0]}_eigengene", 'Group', 'one of name']).T.to_csv(f"./out/COGdata/{tmp[0]}_eigengene.csv")
+    pd.DataFrame([eigengene[f"{tmp[0]}_eigengene"], Group, name], index=[f"{tmp[0]}_eigengene", 'Group', 'one of name']).T.to_csv(f"./out/COGdata/{tmp[0]}_eigengene.csv")
 def main():
  
     if get_args().AA is not None:
