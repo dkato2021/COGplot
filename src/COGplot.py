@@ -419,16 +419,17 @@ def run_rpsblast(paths_to_proteins = None,
     error1 = "specify the path to your Cog database with cogdb option. (default:/home/tmp/db/COG/Cog)"
     #assert os.path.exists('/home/tmp/db/COG/Cog/'), error1
     
-    if 'res_rpsblast' not in os.listdir(path='./'):
-        os.system('mkdir res_rpsblast')
+    if f'res_rpsblast_{get_args().evalue}' not in os.listdir(path='./'):
+        os.system(f'mkdir res_rpsblast_{get_args().evalue}')
     
     path_to_rpsRes = []
     for path in paths_to_proteins:
         name = os.path.splitext(os.path.basename(path))[0]
-        subprocess.run(f"rpsblast -query {path} -db {path_to_cogdb} -out ./res_rpsblast/{name}.txt -evalue {evalue} -outfmt 6"
+        subprocess.run(f"rpsblast -query {path} -db {path_to_cogdb} -out ./res_rpsblast_{get_args().evalue}/{name}.txt -evalue {evalue} -outfmt 6"
                        , shell=True)
-        path_to_rpsRes.append(f"./res_rpsblast/{name}.txt")
+        path_to_rpsRes.append(f"./res_rpsblast_{get_args().evalue}/{name}.txt")
     return path_to_rpsRes
+
 
 def preprocess(rps = None,
                cddid = None,
@@ -452,10 +453,10 @@ def sorter(df_i = None,
 def get_main_dataset(path_to_rpsRes = None,
                      path_to_cddid = None,
                      path_to_cog = None):
-    if 'out' not in os.listdir(path='./'):
-        os.system('mkdir ./out/')
-    if 'COGdata' not in os.listdir(path='./out/'):
-        os.system('mkdir ./out/COGdata/') 
+    if f'out_{get_args().evalue}' not in os.listdir(path='./'):
+        os.system(f'mkdir ./out_{get_args().evalue}/')
+    if 'COGdata' not in os.listdir(path=f"./out_{get_args().evalue}/"):
+        os.system(f'mkdir ./out_{get_args().evalue}/COGdata/') 
     
     df_i = {}
     out_COG_i = {}
@@ -491,8 +492,8 @@ def get_main_dataset(path_to_rpsRes = None,
     _ = _count_data/_count_data.sum()
  
     ratio_data = pd.concat([pd.DataFrame(A2Z, columns=['COG']), _], axis = 1)
-    count_data.to_csv("./out/COGdata/COG_count.csv") ;ratio_data.to_csv("./out/COGdata/COG_ratio.csv")
-    out_COG.to_csv("./out/COGdata/COG_annotation.csv")
+    count_data.to_csv(f"./out_{get_args().evalue}/COGdata/COG_count.csv") ;ratio_data.to_csv(f"./out_{get_args().evalue}/COGdata/COG_ratio.csv")
+    out_COG.to_csv(f"./out_{get_args().evalue}/COGdata/COG_annotation.csv")
     
     return count_data, ratio_data, out_COG_i
 
@@ -519,7 +520,7 @@ def plot_bar(df = None, name = None):
     plt.legend(legend)
     plt.xticks(x, labels)
     #plt.show()
-    fig.savefig(f"./out/COG_{name}.pdf")
+    fig.savefig(f"./out_{get_args().evalue}/COG_{name}.pdf")
 
 def CLR_PCA(df = None, size = None):#各行にCOG。
     def Myclr(df):
@@ -553,7 +554,7 @@ def CLR_PCA(df = None, size = None):#各行にCOG。
         ax1.grid()
         ax1.set_xlabel(f"PC1({(pca.explained_variance_ratio_[0]*100).round(2)}%)")
         ax1.set_ylabel(f"PC2({(pca.explained_variance_ratio_[1]*100).round(2)}%)")
-        fig.savefig(f"./out/PCA_COG.pdf")
+        fig.savefig(f"./out_{get_args().evalue}/PCA_COG.pdf")
 
         ax2 = ax1.twiny().twinx()
         for x, y, name in zip(pca.components_[0], pca.components_[1], df.COG):
@@ -561,7 +562,7 @@ def CLR_PCA(df = None, size = None):#各行にCOG。
             ax2.arrow(x=0,y=0, dx=x, dy=y,
                      width=.0001, length_includes_head=True,color='r')
         ax2.scatter(pca.components_[0],  pca.components_[1], alpha=0, color='r')
-        fig.savefig(f"./out/PCA_COG_withLoadingFactor.pdf")
+        fig.savefig(f"./out_{get_args().evalue}/PCA_COG_withLoadingFactor.pdf")
 
     plot_PCA(df_pca, pca, df)
     
@@ -597,7 +598,7 @@ def plot_venn(dataset = None, size = None):
 
     venn_func(dataset, unique_COG, list(dataset.keys()), ax)
     ax.set_title('All genes')  
-    fig.savefig(f"./out/venn{len(list(dataset.keys()))}Diagrams.pdf")
+    fig.savefig(f"./out_{get_args().evalue}/venn{len(list(dataset.keys()))}Diagrams.pdf")
 
     #2
     fig = plt.figure(figsize=(size * 3, size * 4))
@@ -612,7 +613,7 @@ def plot_venn(dataset = None, size = None):
             venn_func(dataset, unique_COG, list(dataset.keys()), ax)
             ax.set_title(f'{alphabet}')
             plt.tight_layout()
-            fig.savefig(f"./out/COGvenn{len(list(dataset.keys()))}Diagrams.pdf")
+            fig.savefig(f"./out_{get_args().evalue}/COGvenn{len(list(dataset.keys()))}Diagrams.pdf")
 
     unique_COG = []
     for j in range(len(dataset.keys())):
@@ -628,7 +629,7 @@ def plot_venn(dataset = None, size = None):
     for i in range(len(eigengene[f"{tmp[0]}_eigengene"])):
         Group+=set(list(dataset[f"{tmp[0]}"]['Group'][dataset[f"{tmp[0]}"].COG==eigengene[f"{tmp[0]}_eigengene"][i]]))
 
-    pd.DataFrame([eigengene[f"{tmp[0]}_eigengene"], Group], index=[f"{tmp[0]}_eigengene", 'Group']).T.to_csv(f"./out/COGdata/{tmp[0]}_eigengene.csv")
+    pd.DataFrame([eigengene[f"{tmp[0]}_eigengene"], Group], index=[f"{tmp[0]}_eigengene", 'Group']).T.to_csv(f"./out_{get_args().evalue}/COGdata/{tmp[0]}_eigengene.csv")
 def main():
  
     if get_args().AA is not None:
