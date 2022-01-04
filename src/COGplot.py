@@ -22,10 +22,10 @@ def get_args():
     parser.add_argument('-e' , dest ='evalue',
                         default= 1e-28, 
                         help = 'evalue in rpsblast(default:1e-28)')
-    parser.add_argument('-s1' , dest ='s1',
+    parser.add_argument('-venn' , dest ='venn_size',
                         default= 10, type = int,
                         help = 'specify a integer value: graph size of venn diagrams(default:10)')
-    parser.add_argument('-s2' , dest ='s2',
+    parser.add_argument('-PCA' , dest ='PCA_size',
                         default= 10, type = int,
                         help = 'specify a integer value: graph size of PCA plot(default:10)')
     parser.add_argument('-cogdb' , dest ='cogdb',
@@ -613,13 +613,11 @@ def plot_venn(dataset = None, size = None):
             ax.set_title(f'{alphabet}')
             plt.tight_layout()
             fig.savefig(f"./out/COGvenn{len(list(dataset.keys()))}Diagrams.pdf")
-    
-    # コードが少し汚いです。
+
     unique_COG = []
     for j in range(len(dataset.keys())):
         x = dataset[list(dataset.keys())[j]]
         unique_COG.append(set(x['COG'].unique()))
-        
     eigengene = {}
     _ = unique_COG
     tmp = list(dataset.keys())
@@ -659,11 +657,11 @@ def main():
     
     if 2 <= num_files:
         print('- plotting PCA..')
-        CLR_PCA(df = ratio_data, size = get_args().s2)
+        CLR_PCA(df = ratio_data, size = get_args().PCA_size)
         print(f'==>PCA_COG.pdf and PCA_COGwithLoadingFactor.pdf are created.')
     if 2 <= num_files <=6:
         print('- creating venn diagrams..')
-        plot_venn(dataset = dataset, size = get_args().s1)
+        plot_venn(dataset = dataset, size = get_args().venn_size)
         print(f'==>venn diagrams are created.')
 
 if __name__ == "__main__":
