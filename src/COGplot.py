@@ -513,7 +513,12 @@ def plot_bar(df = None, name = None):
     totoal_width = 1 - margin
     fig = plt.figure(figsize=(15,10))
     # 棒グラフをプロット
-    c = ['royalblue','sandybrown','mediumseagreen','m','k','royalblue','sandybrown','mediumseagreen','m','k']
+    c = ['royalblue','sandybrown','mediumseagreen','m','k',
+         'royalblue','sandybrown','mediumseagreen','m','k',
+        'royalblue','sandybrown','mediumseagreen','m','k',
+        'royalblue','sandybrown','mediumseagreen','m','k',
+        'royalblue','sandybrown','mediumseagreen','m','k',
+        'royalblue','sandybrown','mediumseagreen','m','k',]
     for i, h in enumerate(data):
         pos = x - totoal_width *( 1- (2*i+1)/len(data) )/2
         plt.bar(pos, h, width = totoal_width/len(data), color =c[i])
@@ -659,7 +664,7 @@ def main():
                                                           path_to_cddid = get_args().cddid,
                                                           path_to_cog = get_args().cog)
 
-    if num_files <=60:
+    if num_files <=30:
         print('- creating barplot..')
         plot_bar(df = count_data, name ='count')
         plot_bar(df = ratio_data, name ='ratio')
