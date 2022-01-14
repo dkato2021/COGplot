@@ -647,7 +647,7 @@ def plot_venn(dataset = None, size = None):
 def main():
  
     if get_args().AA is not None:
-        print('- rpsblast now...')
+        print(f'- rpsblast now (e-value = {get_args().evalue})...')
         num_files = len(get_args().AA)
         path_to_rpsRes = run_rpsblast(paths_to_proteins = get_args().AA, 
                                       path_to_cogdb = get_args().cogdb, 
