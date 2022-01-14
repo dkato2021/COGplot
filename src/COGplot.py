@@ -480,7 +480,7 @@ def get_main_dataset(path_to_rpsRes = None,
                                   cog = cog)
         
         
-        COG_i = out_COG_i[col_name].rename(columns={'cdd_id': f"{col_name}"}).iloc[:, [0,1,2,3,4]]
+        COG_i = out_COG_i[col_name].rename(columns={'cdd_id': f"{col_name}"}).iloc[:, [0,1,2,3,4,5]]
         out_i = pd.DataFrame(sorter(df_i = df_i[col_name], A2Z = A2Z), columns=[f"{col_name}"])
 
         out = pd.concat([out, out_i], axis = 1)
@@ -513,12 +513,7 @@ def plot_bar(df = None, name = None):
     totoal_width = 1 - margin
     fig = plt.figure(figsize=(15,10))
     # 棒グラフをプロット
-    c = ['royalblue','sandybrown','mediumseagreen','m','k',
-         'royalblue','sandybrown','mediumseagreen','m','k',
-        'royalblue','sandybrown','mediumseagreen','m','k',
-        'royalblue','sandybrown','mediumseagreen','m','k',
-        'royalblue','sandybrown','mediumseagreen','m','k',
-        'royalblue','sandybrown','mediumseagreen','m','k',]
+    c = ['royalblue','sandybrown','mediumseagreen','m','k']*20
     for i, h in enumerate(data):
         pos = x - totoal_width *( 1- (2*i+1)/len(data) )/2
         plt.bar(pos, h, width = totoal_width/len(data), color =c[i])
@@ -588,38 +583,39 @@ def venn_func(dataset, unique_COG, labels, ax):
     elif len(list(dataset.keys()))==6:
         return venn6(subsets, ax, names = labels)
     else:
-        sys.exit()
+        pass
             
 def plot_venn(dataset = None, size = None):
-    A2Z = [chr(i) for i in range(65, 65+26)]
+    if 2 <=len(dataset.keys()) <=6:
+        A2Z = [chr(i) for i in range(65, 65+26)]
 
-    #1
-    fig = plt.figure(figsize=(10,10))
-    ax = fig.add_subplot(111, aspect='equal')
+        #1
+        fig = plt.figure(figsize=(10,10))
+        ax = fig.add_subplot(111, aspect='equal')
 
-    unique_COG = []
-    for j in range(len(dataset.keys())):
-        x = dataset[list(dataset.keys())[j]]
-        unique_COG.append(set(x['COG'].unique()))
-
-    venn_func(dataset, unique_COG, list(dataset.keys()), ax)
-    ax.set_title('All genes')  
-    fig.savefig(f"./out_{get_args().evalue}/venn{len(list(dataset.keys()))}Diagrams.pdf")
-
-    #2
-    fig = plt.figure(figsize=(size * 3, size * 4))
-    for i, alphabet in enumerate(A2Z):
         unique_COG = []
         for j in range(len(dataset.keys())):
             x = dataset[list(dataset.keys())[j]]
-            unique_COG.append(set(x[x['Group']==f'{alphabet}']['COG'].unique()))
+            unique_COG.append(set(x['COG'].unique()))
 
-        if plot_or_not(unique_COG):
-            ax = fig.add_subplot(6, 5, i+1)
-            venn_func(dataset, unique_COG, list(dataset.keys()), ax)
-            ax.set_title(f'{alphabet}')
-            plt.tight_layout()
-            fig.savefig(f"./out_{get_args().evalue}/COGvenn{len(list(dataset.keys()))}Diagrams.pdf")
+        venn_func(dataset, unique_COG, list(dataset.keys()), ax)
+        ax.set_title('All genes')  
+        fig.savefig(f"./out_{get_args().evalue}/venn{len(list(dataset.keys()))}Diagrams.pdf")
+
+        #2
+        fig = plt.figure(figsize=(size * 3, size * 4))
+        for i, alphabet in enumerate(A2Z):
+            unique_COG = []
+            for j in range(len(dataset.keys())):
+                x = dataset[list(dataset.keys())[j]]
+                unique_COG.append(set(x[x['Group']==f'{alphabet}']['COG'].unique()))
+
+            if plot_or_not(unique_COG):
+                ax = fig.add_subplot(6, 5, i+1)
+                venn_func(dataset, unique_COG, list(dataset.keys()), ax)
+                ax.set_title(f'{alphabet}')
+                plt.tight_layout()
+                fig.savefig(f"./out_{get_args().evalue}/COGvenn{len(list(dataset.keys()))}Diagrams.pdf")
 
     #少しコードが汚い
     unique_COG = []
@@ -674,7 +670,7 @@ def main():
         print('- plotting PCA..')
         CLR_PCA(df = ratio_data, size = get_args().PCA_size)
         print(f'==>PCA_COG.pdf and PCA_COGwithLoadingFactor.pdf are created.')
-    if 2 <= num_files <=6:
+    if 2 <= num_files <=100:
         print('- creating venn diagrams..')
         plot_venn(dataset = dataset, size = get_args().venn_size)
         print(f'==>venn diagrams are created.')
