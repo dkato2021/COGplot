@@ -480,7 +480,7 @@ def get_main_dataset(path_to_rpsRes = None,
                                   cog = cog)
         
         
-        COG_i = out_COG_i[col_name].rename(columns={'cdd_id': f"{col_name}"}).iloc[:, [0,1,2,3]]
+        COG_i = out_COG_i[col_name].rename(columns={'cdd_id': f"{col_name}"}).iloc[:, [0,1,2,3,4]]
         out_i = pd.DataFrame(sorter(df_i = df_i[col_name], A2Z = A2Z), columns=[f"{col_name}"])
 
         out = pd.concat([out, out_i], axis = 1)
@@ -658,7 +658,7 @@ def main():
                                                           path_to_cddid = get_args().cddid,
                                                           path_to_cog = get_args().cog)
 
-    if num_files <=10:
+    if num_files <=60:
         print('- creating barplot..')
         plot_bar(df = count_data, name ='count')
         plot_bar(df = ratio_data, name ='ratio')
