@@ -513,9 +513,10 @@ def plot_bar(df = None, name = None):
     totoal_width = 1 - margin
     fig = plt.figure(figsize=(15,10))
     # 棒グラフをプロット
+    c = ['royalblue','sandybrown','mediumseagreen','m','k','royalblue','sandybrown','mediumseagreen','m','k']
     for i, h in enumerate(data):
         pos = x - totoal_width *( 1- (2*i+1)/len(data) )/2
-        plt.bar(pos, h, width = totoal_width/len(data))
+        plt.bar(pos, h, width = totoal_width/len(data), color =c[i])
 
     plt.legend(legend)
     plt.xticks(x, labels)
