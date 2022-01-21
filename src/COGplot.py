@@ -513,16 +513,41 @@ def plot_bar(df = None, name = None):
     totoal_width = 1 - margin
     fig = plt.figure(figsize=(15,10))
     # 棒グラフをプロット
-    c = ['royalblue','sandybrown','mediumseagreen','m','k']*20
+    c1 = ['royalblue','sandybrown','mediumseagreen','m','k']*100
     for i, h in enumerate(data):
         pos = x - totoal_width *( 1- (2*i+1)/len(data) )/2
-        plt.bar(pos, h, width = totoal_width/len(data), color =c[i])
-
-    plt.legend(legend)
+        plt.bar(pos, h, width = totoal_width/len(data), color =c1[i])
+ 
     plt.xticks(x, labels)
-    #plt.show()
+    fig.savefig(f"./out_{get_args().evalue}/COG_{name}_NoLegend.pdf")
+    plt.legend(legend)
     fig.savefig(f"./out_{get_args().evalue}/COG_{name}.pdf")
+    
+    # 棒の配置位置、ラベルを用意
+    labels = list(df['COG'])
+    x = np.array(range(len(labels)))
 
+    # 各系列のデータを用意
+    data, legend = [], []
+    for col_name in df.columns[1:len(df.columns)]:
+        data.append(df[col_name])
+        legend.append(col_name) 
+
+    # マージンを設定
+    margin = 0.2  #0 <margin< 1
+    totoal_width = 1 - margin
+    fig = plt.figure(figsize=(15,10))
+    c2 = ["0"]+["0.7"]*500
+    for i, h in enumerate(data):
+        pos = x - totoal_width *( 1- (2*i+1)/len(data) )/2
+        plt.bar(pos, h, width = totoal_width/len(data), color =c2[i])
+    
+    plt.xticks(x, labels)
+    fig.savefig(f"./out_{get_args().evalue}/COG_{name}_NoColor__NoLegend.pdf")
+    plt.legend(legend)
+    fig.savefig(f"./out_{get_args().evalue}/COG_{name}_NoColor.pdf")
+    
+    
 def CLR_PCA(df = None, size = None):#各行にCOG。
     def Myclr(df):
         def geo_mean(iterable):
@@ -561,8 +586,8 @@ def CLR_PCA(df = None, size = None):#各行にCOG。
         for x, y, name in zip(pca.components_[0], pca.components_[1], df.COG):
             ax2.text(x, y, name)
             ax2.arrow(x=0,y=0, dx=x, dy=y,
-                     width=.0001, length_includes_head=True,color='r')
-        ax2.scatter(pca.components_[0],  pca.components_[1], alpha=0, color='r')
+                     width=.0001, length_includes_head=True,color='m')
+        ax2.scatter(pca.components_[0],  pca.components_[1], alpha=0, color='m')
         fig.savefig(f"./out_{get_args().evalue}/PCA_COG_withLoadingFactor.pdf")
 
     plot_PCA(df_pca, pca, df)
@@ -580,8 +605,8 @@ def CLR_PCA(df = None, size = None):#各行にCOG。
         for x, y, name in zip(pca.components_[0], pca.components_[1], df.COG):
             ax2.text(x, y, name)
             ax2.arrow(x=0,y=0, dx=x, dy=y,
-                     width=.0001, length_includes_head=True,color='r')
-        ax2.scatter(pca.components_[0],  pca.components_[1], alpha=0, color='r')
+                     width=.0001, length_includes_head=True,color='m')
+        ax2.scatter(pca.components_[0],  pca.components_[1], alpha=0, color='m')
         fig.savefig(f"./out_{get_args().evalue}/PCA_COG_NoName.pdf")
 
     plot_PCA_NoName(df_pca, pca, df)
@@ -696,5 +721,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
