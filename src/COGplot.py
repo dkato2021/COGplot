@@ -37,6 +37,8 @@ def get_args():
     parser.add_argument('-cog', dest='cog',
                         default='/home/tmp/db/COG/cdd2cog/cog-20.def.tsv',
                         help = 'path to your cog-20.def.tsv(default:/home/tmp/db/COG/cdd2cog/cog-20.def.tsv)')
+    parser.add_argument('-black', dest='n_black',
+                        default=1,type = int, help = '')
     return parser.parse_args()
 #'/Users/daiki/Python/M2/rpsblast/data/cddid_COG.tbl',
 #'/home/tmp/db/COG/cdd2cog/cddid_COG.tbl'
@@ -497,7 +499,7 @@ def get_main_dataset(path_to_rpsRes = None,
     
     return count_data, ratio_data, out_COG_i
 
-def plot_bar(df = None, name = None):
+def plot_bar(df = None, name = None, n_black = None):
     # 棒の配置位置、ラベルを用意
     labels = list(df['COG'])
     x = np.array(range(len(labels)))
@@ -523,6 +525,7 @@ def plot_bar(df = None, name = None):
     plt.legend(legend)
     fig.savefig(f"./out_{get_args().evalue}/COG_{name}.pdf")
     
+    #コードが汚い
     # 棒の配置位置、ラベルを用意
     labels = list(df['COG'])
     x = np.array(range(len(labels)))
@@ -537,7 +540,7 @@ def plot_bar(df = None, name = None):
     margin = 0.2  #0 <margin< 1
     totoal_width = 1 - margin
     fig = plt.figure(figsize=(15,10))
-    c2 = ["0"]+["0.7"]*500
+    c2 = ["0"]*n_black+["0.7"]*500
     for i, h in enumerate(data):
         pos = x - totoal_width *( 1- (2*i+1)/len(data) )/2
         plt.bar(pos, h, width = totoal_width/len(data), color =c2[i])
@@ -704,10 +707,10 @@ def main():
                                                           path_to_cddid = get_args().cddid,
                                                           path_to_cog = get_args().cog)
 
-    if num_files <=30:
+    if 2 <=num_files :
         print('- creating barplot..')
-        plot_bar(df = count_data, name ='count')
-        plot_bar(df = ratio_data, name ='ratio')
+        plot_bar(df = count_data, name ='count', n_black = get_args().n_black)
+        plot_bar(df = ratio_data, name ='ratio', n_black = get_args().n_black)
         print(f'==>COG_count.pdf and COG_ratio.pdf are created.')
     
     if 2 <= num_files:
