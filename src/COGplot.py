@@ -41,7 +41,7 @@ def get_args():
                         default='/home/tmp/db/COG/cdd2cog/cog-20.def.tsv',
                         help = 'path to your cog-20.def.tsv(default:/home/tmp/db/COG/cdd2cog/cog-20.def.tsv)')
     parser.add_argument('-black', dest='n_black',
-                        default=1,type = int, help = '')
+                        default=1,type = int, help = ' Number of bars dyed in black in a bar graph')
     return parser.parse_args()
 #'/Users/daiki/Python/M2/rpsblast/data/cddid_COG.tbl',
 #'/home/tmp/db/COG/cdd2cog/cddid_COG.tbl'
@@ -424,15 +424,15 @@ def run_rpsblast(paths_to_proteins = None,
     error1 = "specify the path to your Cog database with cogdb option. (default:/home/tmp/db/COG/Cog)"
     #assert os.path.exists('/home/tmp/db/COG/Cog/'), error1
     
-    if f'res_rpsblast_{get_args().evalue}' not in os.listdir(path='./'):
-        os.system(f'mkdir res_rpsblast_{get_args().evalue}')
+    if f'rps_{get_args().evalue}' not in os.listdir(path='./'):
+        os.system(f'mkdir rps_{get_args().evalue}')
     
     path_to_rpsRes = []
     for path in paths_to_proteins:
         name = os.path.splitext(os.path.basename(path))[0]
-        subprocess.run(f"rpsblast -query {path} -db {path_to_cogdb} -out ./res_rpsblast_{get_args().evalue}/{name}.txt -evalue {evalue} -outfmt 6"
+        subprocess.run(f"rpsblast -query {path} -db {path_to_cogdb} -out ./rps_{get_args().evalue}/{name}.txt -evalue {evalue} -outfmt 6"
                        , shell=True)
-        path_to_rpsRes.append(f"./res_rpsblast_{get_args().evalue}/{name}.txt")
+        path_to_rpsRes.append(f"./rps_{get_args().evalue}/{name}.txt")
     return path_to_rpsRes
 
 
@@ -503,6 +503,8 @@ def get_main_dataset(path_to_rpsRes = None,
     return count_data, ratio_data, out_COG_i
 
 def plot_bar(df = None, name = None, n_black = None, size = None):
+    if 'bar' not in os.listdir(path=f"./out_{get_args().evalue}/"):
+        os.system(f'mkdir ./out_{get_args().evalue}/bar/') 
     # 棒の配置位置、ラベルを用意
     labels = list(df['COG'])
     x = np.array(range(len(labels)))
@@ -524,9 +526,9 @@ def plot_bar(df = None, name = None, n_black = None, size = None):
         plt.bar(pos, h, width = totoal_width/len(data), color =c1[i])
  
     plt.xticks(x, labels)
-    fig.savefig(f"./out_{get_args().evalue}/COG_{name}_NoLegend.pdf")
+    fig.savefig(f"./out_{get_args().evalue}/bar/COG_{name}_NoLegend.pdf")
     plt.legend(legend)
-    fig.savefig(f"./out_{get_args().evalue}/COG_{name}.pdf")
+    fig.savefig(f"./out_{get_args().evalue}/bar/COG_{name}.pdf")
     
     #コードが汚い
     # 棒の配置位置、ラベルを用意
@@ -549,15 +551,20 @@ def plot_bar(df = None, name = None, n_black = None, size = None):
         plt.bar(pos, h, width = totoal_width/len(data), color =c2[i])
     
     plt.xticks(x, labels)
-    fig.savefig(f"./out_{get_args().evalue}/COG_{name}_NoColor__NoLegend.pdf")
+    fig.savefig(f"./out_{get_args().evalue}/bar/COG_{name}_NoColor__NoLegend.pdf")
     plt.legend(legend)
-    fig.savefig(f"./out_{get_args().evalue}/COG_{name}_NoColor.pdf")
+    fig.savefig(f"./out_{get_args().evalue}/bar/COG_{name}_NoColor.pdf")
     
     
-def CLR_PCA(df = None, size = None):#各行にCOG。
+def CLR_PCA(df = None, size = None, delta = None):#各行にCOG。
+    if 'PCA' not in os.listdir(path=f"./out_{get_args().evalue}/"):
+        os.system(f'mkdir ./out_{get_args().evalue}/PCA/') 
+    if f'PCA_{delta}' not in os.listdir(path=f"./out_{get_args().evalue}/PCA/"):
+        os.system(f'mkdir ./out_{get_args().evalue}/PCA/PCA_{delta}') 
+        
     def Myclr(df):
         def geo_mean(iterable):
-            a = np.array(iterable)
+            a = np.array(iterable).astype(float)
             return a.prod()**(1.0/len(a))
         df_clr = pd.DataFrame()
         for i in range(len(df.index)):
@@ -565,7 +572,7 @@ def CLR_PCA(df = None, size = None):#各行にCOG。
             df_clr = pd.concat([df_clr, tmp.map(math.log)], axis=1)
         return df_clr.T
     #ゼロ値の保管
-    clr_in = df.iloc[:, 1:] + 1
+    clr_in = df.iloc[:, 1:] + delta
     
     #CLR
     df_clr = Myclr(clr_in.T).T#clr関数は行方向に和が１ものしか受け付けない
@@ -574,7 +581,6 @@ def CLR_PCA(df = None, size = None):#各行にCOG。
     pca = PCA(n_components=2)
     _ = pca.fit_transform(df_clr.T)
     df_pca = pd.DataFrame(_, columns = ["PCA1", "PCA2"])
-    
     
     def plot_PCA(df_pca, pca, df):
         fig = plt.figure(figsize=(size *2, size * 2))
@@ -586,7 +592,7 @@ def CLR_PCA(df = None, size = None):#各行にCOG。
         ax1.grid()
         ax1.set_xlabel(f"PC1({(pca.explained_variance_ratio_[0]*100).round(2)}%)")
         ax1.set_ylabel(f"PC2({(pca.explained_variance_ratio_[1]*100).round(2)}%)")
-        fig.savefig(f"./out_{get_args().evalue}/PCA_COG.pdf")
+        fig.savefig(f"./out_{get_args().evalue}/PCA/PCA_{delta}/PCA_COG.pdf")
 
         ax2 = ax1.twiny().twinx()
         for x, y, name in zip(pca.components_[0], pca.components_[1], df.COG):
@@ -594,10 +600,11 @@ def CLR_PCA(df = None, size = None):#各行にCOG。
             ax2.arrow(x=0,y=0, dx=x, dy=y,
                      width=.0001, length_includes_head=True,color='m')
         ax2.scatter(pca.components_[0],  pca.components_[1], alpha=0, color='m')
-        fig.savefig(f"./out_{get_args().evalue}/PCA_COG_withLoadingFactor.pdf")
+        fig.savefig(f"./out_{get_args().evalue}/PCA/PCA_{delta}/PCA_COG_withLoadingFactor.pdf")
 
     plot_PCA(df_pca, pca, df)
     
+    #コードが汚い
     def plot_PCA_NoName(df_pca, pca, df):
         fig = plt.figure(figsize=(size *2, size * 2))
         ax1 = fig.subplots()
@@ -613,7 +620,7 @@ def CLR_PCA(df = None, size = None):#各行にCOG。
             ax2.arrow(x=0,y=0, dx=x, dy=y,
                      width=.0001, length_includes_head=True,color='m')
         ax2.scatter(pca.components_[0],  pca.components_[1], alpha=0, color='m')
-        fig.savefig(f"./out_{get_args().evalue}/PCA_COG_NoName.pdf")
+        fig.savefig(f"./out_{get_args().evalue}/PCA/PCA_{delta}/PCA_COG_NoName.pdf")
 
     plot_PCA_NoName(df_pca, pca, df)
     
@@ -691,7 +698,7 @@ def plot_venn(dataset = None, size = None):
     pd.DataFrame([eigengene[f"{tmp[0]}_eigengene"], gene, gene_name, Group, name],
              index=[f"{tmp[0]}_eigengene", "gene", "gene name", 'Group', 'one of the names']).T.to_csv(f"./out_{get_args().evalue}/COGdata/{tmp[0]}_eigengene.csv")
 def main():
- 
+    print(f'Output directory is ./out_{get_args().evalue}')
     if get_args().AA is not None:
         print(f'- rpsblast now (e-value = {get_args().evalue})...')
         num_files = len(get_args().AA)
@@ -718,9 +725,10 @@ def main():
     
     if 2 <= num_files:
         print('- plotting PCA..')
-        CLR_PCA(df = ratio_data, size = get_args().PCA_size)
-        print(f'==>PCA_COG.pdf and PCA_COGwithLoadingFactor.pdf are created.')
-    if 2 <= num_files <=100:
+        for i in [.1, 1, 10]:
+            CLR_PCA(df = ratio_data, size = get_args().PCA_size, delta =i)
+        #print(f'==>PCA_COG.pdf and PCA_COGwithLoadingFactor.pdf are created.')
+    if 2 <= num_files:
         print('- creating venn diagrams..')
         plot_venn(dataset = dataset, size = get_args().venn_size)
         print(f'==>venn diagrams are created.')
