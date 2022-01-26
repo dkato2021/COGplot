@@ -28,6 +28,9 @@ def get_args():
     parser.add_argument('-PCA' , dest ='PCA_size',
                         default= 10, type = int,
                         help = 'specify a integer value: graph size of PCA plot(default:10)')
+    parser.add_argument('-bar' , dest ='bar_size',
+                        default= 5, type = int,
+                        help = 'specify a integer value: graph size of bar plot(default:10)')
     parser.add_argument('-cogdb' , dest ='cogdb',
                         default= '/home/tmp/db/COG/Cog', 
                        help = 'path to your cogdb to run rpsblast(default:/home/tmp/db/COG/Cog)')    
@@ -499,7 +502,7 @@ def get_main_dataset(path_to_rpsRes = None,
     
     return count_data, ratio_data, out_COG_i
 
-def plot_bar(df = None, name = None, n_black = None):
+def plot_bar(df = None, name = None, n_black = None, size = None):
     # 棒の配置位置、ラベルを用意
     labels = list(df['COG'])
     x = np.array(range(len(labels)))
@@ -513,7 +516,7 @@ def plot_bar(df = None, name = None, n_black = None):
     # マージンを設定
     margin = 0.2  #0 <margin< 1
     totoal_width = 1 - margin
-    fig = plt.figure(figsize=(15,10))
+    fig = plt.figure(figsize=(3*size,2*size))
     # 棒グラフをプロット
     c1 = ['royalblue','sandybrown','mediumseagreen','m','k']*100
     for i, h in enumerate(data):
@@ -539,7 +542,7 @@ def plot_bar(df = None, name = None, n_black = None):
     # マージンを設定
     margin = 0.2  #0 <margin< 1
     totoal_width = 1 - margin
-    fig = plt.figure(figsize=(15,10))
+    fig = plt.figure(figsize=(3*size,2*size))
     c2 = ["0"]*n_black+["0.7"]*500
     for i, h in enumerate(data):
         pos = x - totoal_width *( 1- (2*i+1)/len(data) )/2
@@ -709,8 +712,8 @@ def main():
 
     if 2 <=num_files :
         print('- creating barplot..')
-        plot_bar(df = count_data, name ='count', n_black = get_args().n_black)
-        plot_bar(df = ratio_data, name ='ratio', n_black = get_args().n_black)
+        plot_bar(df = count_data, name ='count', n_black = get_args().n_black, size = get_args().bar_size)
+        plot_bar(df = ratio_data, name ='ratio', n_black = get_args().n_black, size = get_args().bar_size)
         print(f'==>COG_count.pdf and COG_ratio.pdf are created.')
     
     if 2 <= num_files:
@@ -724,6 +727,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
