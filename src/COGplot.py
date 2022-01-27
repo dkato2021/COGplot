@@ -520,7 +520,7 @@ def plot_bar(df = None, name = None, n_black = None, size = None):
     totoal_width = 1 - margin
     fig = plt.figure(figsize=(3*size,2*size))
     # 棒グラフをプロット
-    c1 = ['royalblue','sandybrown','mediumseagreen','m','k']*100
+    c1 = ['royalblue','sandybrown','yellowgreen','hotpink','0.7']*100
     for i, h in enumerate(data):
         pos = x - totoal_width *( 1- (2*i+1)/len(data) )/2
         plt.bar(pos, h, width = totoal_width/len(data), color =c1[i])
@@ -600,8 +600,8 @@ def CLR_PCA(df = None, size = None, delta = None):#各行にCOG。
             ax2.arrow(x=0,y=0, dx=x, dy=y,
                      width=.0001, length_includes_head=True,color='m')
         ax2.scatter(pca.components_[0],  pca.components_[1], alpha=0, color='m')
-        ax1.twiny().set_xlabel(f"loading factor of PC1")
-        ax2.set_ylabel(f"loading factor of PC2")
+        ax1.set_title(f"Loading factor of PC1", fontsize=20/size*2)
+        ax2.set_ylabel(f"Loading factor of PC2", fontsize=20/size*2)
         fig.savefig(f"./out_{get_args().evalue}/PCA/PCA_{delta}/PCA_COG_withLoadingFactor.pdf")
 
     plot_PCA(df_pca, pca, df)
@@ -622,8 +622,8 @@ def CLR_PCA(df = None, size = None, delta = None):#各行にCOG。
             ax2.arrow(x=0,y=0, dx=x, dy=y,
                      width=.0001, length_includes_head=True,color='m')
         ax2.scatter(pca.components_[0],  pca.components_[1], alpha=0, color='m')
-        ax1.twiny().set_xlabel(f"loading factor of PC1")
-        ax2.set_ylabel(f"loading factor of PC2")
+        ax1.set_title(f"Loading factor of PC1", fontsize=20/size*2)
+        ax2.set_ylabel(f"Loading factor of PC2", fontsize=20/size*2)
         fig.savefig(f"./out_{get_args().evalue}/PCA/PCA_{delta}/PCA_COG_NoName.pdf")
 
     plot_PCA_NoName(df_pca, pca, df)
@@ -740,6 +740,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
 
 
 
