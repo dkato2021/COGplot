@@ -22,17 +22,17 @@ def get_args():
     parser.add_argument('-e' , dest ='evalue',
                         default= 1e-28, 
                         help = 'evalue in rpsblast(default:1e-28)')
-    parser.add_argument('-venn' , dest ='venn_size',
-                        default= 7, type = int,
-                        help = 'specify a integer value: graph size of venn diagrams(default:7)')
-    parser.add_argument('-PCA' , dest ='PCA_size',
-                        default= 5, type = int,
-                        help = 'specify a integer value: graph size of PCA plot(default:5)')
     parser.add_argument('-bar' , dest ='bar_size',
                         default= 5, type = int,
                         help = 'specify a integer value: graph size of bar plot(default:10)')
     parser.add_argument('-B', dest='n_black',
                         default=1,type = int, help = 'Number of bars dyed in black in a bar graph(default:1)')
+    parser.add_argument('-PCA' , dest ='PCA_size',
+                        default= 5, type = int,
+                        help = 'specify a integer value: graph size of PCA plot(default:5)')
+    parser.add_argument('-venn' , dest ='venn_size',
+                        default= 7, type = int,
+                        help = 'specify a integer value: graph size of venn diagrams(default:7)')
     parser.add_argument('-cogdb' , dest ='cogdb',
                         default= '/home/tmp/db/COG/Cog', 
                        help = 'path to your cogdb to run rpsblast(default:/home/tmp/db/COG/Cog)')    
