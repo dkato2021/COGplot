@@ -31,6 +31,8 @@ def get_args():
     parser.add_argument('-bar' , dest ='bar_size',
                         default= 5, type = int,
                         help = 'specify a integer value: graph size of bar plot(default:10)')
+    parser.add_argument('-B', dest='n_black',
+                        default=1,type = int, help = 'Number of bars dyed in black in a bar graph(default:1)')
     parser.add_argument('-cogdb' , dest ='cogdb',
                         default= '/home/tmp/db/COG/Cog', 
                        help = 'path to your cogdb to run rpsblast(default:/home/tmp/db/COG/Cog)')    
@@ -520,7 +522,7 @@ def plot_bar(df = None, name = None, n_black = None, size = None):
     totoal_width = 1 - margin
     fig = plt.figure(figsize=(3*size,2*size))
     # 棒グラフをプロット
-    c1 = ['royalblue','sandybrown','yellowgreen','hotpink','0.7']*100
+    c1 = ['royalblue','sandybrown','mediumseagreen','m','k']*100
     for i, h in enumerate(data):
         pos = x - totoal_width *( 1- (2*i+1)/len(data) )/2
         plt.bar(pos, h, width = totoal_width/len(data), color =c1[i])
@@ -556,11 +558,11 @@ def plot_bar(df = None, name = None, n_black = None, size = None):
     fig.savefig(f"./out_{get_args().evalue}/bar/COG_{name}_NoColor.pdf")
     
     
-def CLR_PCA(df = None, size = None, delta = None):#各行にCOG。
-    if 'PCA' not in os.listdir(path=f"./out_{get_args().evalue}/"):
-        os.system(f'mkdir ./out_{get_args().evalue}/PCA/') 
-    if f'PCA_{delta}' not in os.listdir(path=f"./out_{get_args().evalue}/PCA/"):
-        os.system(f'mkdir ./out_{get_args().evalue}/PCA/PCA_{delta}') 
+def CLR_PCA(df = None, size = None, delta = None, tag = None):#各行にCOG。
+    if f'PCA_{tag}' not in os.listdir(path=f"./out_{get_args().evalue}/"):
+        os.system(f'mkdir ./out_{get_args().evalue}/PCA_{tag}/') 
+    if f'PCA_{tag}_{delta}' not in os.listdir(path=f"./out_{get_args().evalue}/PCA_{tag}/"):
+        os.system(f'mkdir ./out_{get_args().evalue}/PCA_{tag}/PCA_{tag}_{delta}') 
         
     def Myclr(df):
         def geo_mean(iterable):
@@ -592,7 +594,7 @@ def CLR_PCA(df = None, size = None, delta = None):#各行にCOG。
         ax1.grid()
         ax1.set_xlabel(f"PC1({(pca.explained_variance_ratio_[0]*100).round(2)}%)")
         ax1.set_ylabel(f"PC2({(pca.explained_variance_ratio_[1]*100).round(2)}%)")
-        fig.savefig(f"./out_{get_args().evalue}/PCA/PCA_{delta}/PCA_COG.pdf")
+        fig.savefig(f"./out_{get_args().evalue}/PCA_{tag}/PCA_{tag}_{delta}/PCA_COG_{tag}_{delta}.pdf")
 
         ax2 = ax1.twiny().twinx()
         for x, y, name in zip(pca.components_[0], pca.components_[1], df.COG):
@@ -602,7 +604,7 @@ def CLR_PCA(df = None, size = None, delta = None):#各行にCOG。
         ax2.scatter(pca.components_[0],  pca.components_[1], alpha=0, color='m')
         ax1.set_title(f"PC1 Loading", fontsize=20/size*2)
         ax2.set_ylabel(f"PC2 Loading", fontsize=20/size*2)
-        fig.savefig(f"./out_{get_args().evalue}/PCA/PCA_{delta}/PCA_COG_withLoadingFactor.pdf")
+        fig.savefig(f"./out_{get_args().evalue}/PCA_{tag}/PCA_{tag}_{delta}/PCA_COG_{tag}_{delta}_withLoadingFactor.pdf")
 
     plot_PCA(df_pca, pca, df)
     
@@ -624,7 +626,7 @@ def CLR_PCA(df = None, size = None, delta = None):#各行にCOG。
         ax2.scatter(pca.components_[0],  pca.components_[1], alpha=0, color='m')
         ax1.set_title(f"PC1 Loading", fontsize=20/size*2)
         ax2.set_ylabel(f"PC2 Loading", fontsize=20/size*2)
-        fig.savefig(f"./out_{get_args().evalue}/PCA/PCA_{delta}/PCA_COG_NoName.pdf")
+        fig.savefig(f"./out_{get_args().evalue}/PCA_{tag}/PCA_{tag}_{delta}/PCA_COG_{tag}_{delta}_NoName.pdf")
 
     plot_PCA_NoName(df_pca, pca, df)
     
@@ -701,7 +703,6 @@ def plot_venn(dataset = None, size = None):
         gene_name+=set(list(dataset[f"{tmp[0]}"]['gene_name'][x]))
     pd.DataFrame([eigengene[f"{tmp[0]}_eigengene"], gene, gene_name, Group, name],
              index=[f"{tmp[0]}_eigengene", "gene", "gene name", 'Group', 'one of the names']).T.to_csv(f"./out_{get_args().evalue}/COGdata/{tmp[0]}_eigengene.csv")
-    
 def main():
     print(f'Output directory is ./out_{get_args().evalue}')
     if get_args().AA is not None:
@@ -726,23 +727,22 @@ def main():
         print('- creating barplot..')
         plot_bar(df = count_data, name ='count', n_black = get_args().n_black, size = get_args().bar_size)
         plot_bar(df = ratio_data, name ='ratio', n_black = get_args().n_black, size = get_args().bar_size)
-        print(f'==>COG_count.pdf and COG_ratio.pdf are created.')
+        print(f'==>done')
     
     if 2 <= num_files:
         print('- plotting PCA..')
         for i in [.1, 1, 10]:
-            CLR_PCA(df = ratio_data, size = get_args().PCA_size, delta =i)
-        #print(f'==>PCA_COG.pdf and PCA_COGwithLoadingFactor.pdf are created.')
+            CLR_PCA(df = count_data, size = get_args().PCA_size, delta =i, tag = "count")
+        for i in [.1, 1, 10]:
+            CLR_PCA(df = ratio_data, size = get_args().PCA_size, delta =i, tag = "ratio")
+        print(f'==>done')
     if 2 <= num_files:
-        print('- creating venn diagrams..')
+        print('- finding unique genes..')
         plot_venn(dataset = dataset, size = get_args().venn_size)
-        print(f'==>venn diagrams are created.')
+        print(f'==>done')
 
 if __name__ == "__main__":
     main()
-
-
-
 
 
 
