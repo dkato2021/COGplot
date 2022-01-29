@@ -42,8 +42,7 @@ def get_args():
     parser.add_argument('-cog', dest='cog',
                         default='/home/tmp/db/COG/cdd2cog/cog-20.def.tsv',
                         help = 'path to your cog-20.def.tsv(default:/home/tmp/db/COG/cdd2cog/cog-20.def.tsv)')
-    parser.add_argument('-black', dest='n_black',
-                        default=1,type = int, help = ' Number of bars dyed in black in a bar graph')
+
     return parser.parse_args()
 #'/Users/daiki/Python/M2/rpsblast/data/cddid_COG.tbl',
 #'/home/tmp/db/COG/cdd2cog/cddid_COG.tbl'
