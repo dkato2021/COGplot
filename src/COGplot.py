@@ -12,6 +12,7 @@ import matplotlib_venn
 import math
 from itertools import chain
 from collections import Counter, Iterable
+from tqdm import tqdm
 
 def get_args():
     parser = argparse.ArgumentParser(description='dkato. November, 2021')
@@ -24,7 +25,7 @@ def get_args():
                         help = 'evalue in rpsblast(default:1e-28)')
     parser.add_argument('-bar' , dest ='bar_size',
                         default= 5, type = int,
-                        help = 'specify a integer value: graph size of bar plot(default:10)')
+                        help = 'specify a integer value: graph size of bar plot(default:5)')
     parser.add_argument('-B', dest='n_black',
                         default=1,type = int, help = 'Number of bars dyed in black in a bar graph(default:1)')
     parser.add_argument('-PCA' , dest ='PCA_size',
@@ -521,7 +522,7 @@ def plot_bar(df = None, name = None, n_black = None, size = None):
     totoal_width = 1 - margin
     fig = plt.figure(figsize=(3*size,2*size))
     # 棒グラフをプロット
-    c1 = ['royalblue','sandybrown','mediumseagreen','m','k']*100
+    c1 = ['royalblue','sandybrown','mediumseagreen','m','k']*500
     for i, h in enumerate(data):
         pos = x - totoal_width *( 1- (2*i+1)/len(data) )/2
         plt.bar(pos, h, width = totoal_width/len(data), color =c1[i])
@@ -546,7 +547,7 @@ def plot_bar(df = None, name = None, n_black = None, size = None):
     margin = 0.2  #0 <margin< 1
     totoal_width = 1 - margin
     fig = plt.figure(figsize=(3*size,2*size))
-    c2 = ["0"]*n_black+["0.7"]*500
+    c2 = ["0"]*n_black+["0.7"]*2500
     for i, h in enumerate(data):
         pos = x - totoal_width *( 1- (2*i+1)/len(data) )/2
         plt.bar(pos, h, width = totoal_width/len(data), color =c2[i])
@@ -701,7 +702,7 @@ def plot_venn(dataset = None, size = None):
         gene+=set(list(dataset[f"{tmp[0]}"]['gene'][x]))
         gene_name+=set(list(dataset[f"{tmp[0]}"]['gene_name'][x]))
     pd.DataFrame([eigengene[f"{tmp[0]}_eigengene"], gene, gene_name, Group, name],
-             index=[f"{tmp[0]}_eigengene", "gene", "gene name", 'Group', 'one of the names']).T.to_csv(f"./out_{get_args().evalue}/COGdata/{tmp[0]}_eigengene.csv")
+             index=[f"{tmp[0]}_eigengene", "gene", "gene name", 'Group', 'one of the names']).T.to_csv(f"./out_{get_args().evalue}/COGdata/{tmp[0]}_uniquegene.csv")
 def main():
     print(f'Output directory is ./out_{get_args().evalue}')
     if get_args().AA is not None:
@@ -730,11 +731,12 @@ def main():
     
     if 2 <= num_files:
         print('- plotting PCA..')
-        for i in [.1, 1, 10]:
+        for i in [1]:
             CLR_PCA(df = count_data, size = get_args().PCA_size, delta =i, tag = "count")
-        for i in [.1, 1, 10]:
+        for i in [1]:
             CLR_PCA(df = ratio_data, size = get_args().PCA_size, delta =i, tag = "ratio")
         print(f'==>done')
+        
     if 2 <= num_files:
         print('- finding unique genes..')
         plot_venn(dataset = dataset, size = get_args().venn_size)
