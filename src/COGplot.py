@@ -522,7 +522,7 @@ def plot_bar(df = None, name = None, n_black = None, size = None):
     totoal_width = 1 - margin
     fig = plt.figure(figsize=(3*size,2*size))
     # 棒グラフをプロット
-    c1 = ['royalblue','sandybrown','mediumseagreen','m','k']*500
+    c1 = ['royalblue','sandybrown','yellowgreen','hotpink','0.7']*500
     for i, h in enumerate(data):
         pos = x - totoal_width *( 1- (2*i+1)/len(data) )/2
         plt.bar(pos, h, width = totoal_width/len(data), color =c1[i])
