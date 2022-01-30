@@ -21,21 +21,19 @@ def get_args():
     parser.add_argument('-AA' , dest ='AA', nargs='*',
                         help = 'pathsã€€to your amino acids files of genes(Venn diagram is not output if there are 6 or more files)')
     parser.add_argument('-e' , dest ='evalue',
-                        default= 1e-28, 
-                        help = 'evalue in rpsblast(default:1e-28)')
+                        default= 1e-28,  help = 'evalue in rpsblast(default:1e-28)')
     parser.add_argument('-bar' , dest ='bar_size',
-                        default= 5, type = int,
-                        help = 'specify a integer value: graph size of bar plot(default:5)')
+                        default= 5, type = int, help = 'specify a integer value: graph size of bar plot(default:5)')
     parser.add_argument('-B', dest='n_black',
                         default=1,type = int, help = 'Number of bars dyed in black in a bar graph(default:1)')
     parser.add_argument('-PCA' , dest ='PCA_size',
-                        default= 5, type = int,
-                        help = 'specify a integer value: graph size of PCA plot(default:5)')
-    parser.add_argument('-G', dest='n_green',
-                        default=0,type = int, help = 'Number of points dyed in green in a PCA plot(default:0)')
+                        default= 5, type = int, help = 'specify a integer value: graph size of PCA plot(default:5)')
+    parser.add_argument('-P', dest='n_pink',
+                        default=0,type = int, help = 'Number of points dyed in pink in a PCA plot(default:0)')
     parser.add_argument('-venn' , dest ='venn_size',
-                        default= 7, type = int,
-                        help = 'specify a integer value: graph size of venn diagrams(default:7)')
+                        default= 7, type = int, help = 'specify a integer value: graph size of venn diagrams(default:7)')
+                        
+                        
     parser.add_argument('-cogdb' , dest ='cogdb',
                         default= '/home/tmp/db/COG/Cog', 
                        help = 'path to your cogdb to run rpsblast(default:/home/tmp/db/COG/Cog)')    
@@ -589,7 +587,7 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_green = None):#å
     def plot_PCA(df_pca, pca, df):
         fig = plt.figure(figsize=(size *2, size * 2))
         ax1 = fig.subplots()
-        ax1.scatter(df_pca.PCA1[:n_green], df_pca.PCA2[:n_green], alpha=0.8, c='g')
+        ax1.scatter(df_pca.PCA1[:n_green], df_pca.PCA2[:n_green], alpha=0.8, c='hotpink')
         ax1.scatter(df_pca.PCA1[n_green:], df_pca.PCA2[n_green:], alpha=0.8)
         for x, y, name in zip(df_pca.PCA1, df_pca.PCA2, df.columns[1:]):
             ax1.text(x, y, name)
@@ -615,7 +613,7 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_green = None):#å
     def plot_PCA_NoName(df_pca, pca, df):
         fig = plt.figure(figsize=(size *2, size * 2))
         ax1 = fig.subplots()
-        ax1.scatter(df_pca.PCA1[:n_green], df_pca.PCA2[:n_green], alpha=0.8, c='g')
+        ax1.scatter(df_pca.PCA1[:n_green], df_pca.PCA2[:n_green], alpha=0.8, c='hotpink')
         ax1.scatter(df_pca.PCA1[n_green:], df_pca.PCA2[n_green:], alpha=0.8)
         ax1.grid()
         ax1.set_xlabel(f"PC1({(pca.explained_variance_ratio_[0]*100).round(2)}%)")
@@ -736,10 +734,10 @@ def main():
         print('- plotting PCA..')
         for i in [1]:
             CLR_PCA(df = count_data, size = get_args().PCA_size,
-                    delta =i, tag = "count", n_green = get_args().n_green)
+                    delta =i, tag = "count", n_green = get_args().n_pink)
         for i in [1]:
             CLR_PCA(df = ratio_data, size = get_args().PCA_size,
-                    delta =i, tag = "ratio", n_green = get_args().n_green)
+                    delta =i, tag = "ratio", n_green = get_args().n_pink)
         print(f'==>done')
         
     if 2 <= num_files:
