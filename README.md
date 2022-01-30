@@ -28,13 +28,14 @@ $ COGplot.py -rps  [genes1.txt [genes2.txt ...]]
   -rps [RPS [RPS ...]]  path to your results of rpsblast
   -AA [AA [AA ...]]     paths　to your amino acids files of genes(Venn diagram is not output if there are 6 or more files)
   -e EVALUE             evalue in rpsblast(default:1e-28)
-  -venn VENN_SIZE       specify a integer value: graph size of venn diagrams(default:7)
+  -bar BAR_SIZE         specify a integer value: graph size of bar plot(default:5)
+  -B N_BLACK            Number of bars dyed in black in a bar graph(default:1)
   -PCA PCA_SIZE         specify a integer value: graph size of PCA plot(default:5)
-  -bar BAR_SIZE         specify a integer value: graph size of bar plot(default:10)
+  -P N_PINK             Number of points dyed in pink in a PCA plot(default:0)
+  -venn VENN_SIZE       specify a integer value: graph size of venn diagrams(default:7)
   -cogdb COGDB          path to your cogdb to run rpsblast(default:/home/tmp/db/COG/Cog)
   -cddid CDDID          path to your cddid_COG.tbl(default:/home/tmp/db/COG/cdd2cog/cddid_COG.tbl)
   -cog COG              path to your cog-20.def.tsv(default:/home/tmp/db/COG/cdd2cog/cog-20.def.tsv)
-  -black N_BLACK        Number of bars dyed in black in a bar graph
 ```
 
 ## [図の見方](https://statistics.co.jp/reference/software_R/statR_9_principal.pdf)
