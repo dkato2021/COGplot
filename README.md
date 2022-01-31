@@ -45,7 +45,7 @@ $ COGplot.py -rps  [genes1.txt [genes2.txt ...]]
 - https://statistics.co.jp/reference/software_R/statR_9_principal.pdf
 
 ## 出力例
-![[./images/A.pdf]]
+![](./images/A.pdf)
 ![](./images/COG_count.png)
 ![](./images/COG_ratio.png)
 ![](./images/venn3Diagram.png)
