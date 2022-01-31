@@ -558,7 +558,7 @@ def plot_bar(df = None, name = None, n_black = None, size = None):
     fig.savefig(f"./out_{get_args().evalue}/bar/COG_{name}_NoColor.pdf")
     
     
-def CLR_PCA(df = None, size = None, delta = None, tag = None, n_green = None):#各行にCOG。
+def CLR_PCA(df = None, size = None, delta = None, tag = None, n_green = None, CLR = None):#各行にCOG。
     if f'PCA_{tag}' not in os.listdir(path=f"./out_{get_args().evalue}/"):
         os.system(f'mkdir ./out_{get_args().evalue}/PCA_{tag}/') 
     if f'PCA_{tag}_{delta}' not in os.listdir(path=f"./out_{get_args().evalue}/PCA_{tag}/"):
@@ -577,7 +577,10 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_green = None):#�
     clr_in = df.iloc[:, 1:] + delta
     
     #CLR
-    df_clr = Myclr(clr_in.T).T#clr関数は行方向に和が１ものしか受け付けない
+    if CLR:
+        df_clr = Myclr(clr_in.T).T#clr関数は行方向に和が１ものしか受け付けない
+    else:
+        df_clr = clr_in
     
     #PCA
     pca = PCA(n_components=2)
@@ -725,24 +728,24 @@ def main():
                                                           path_to_cog = get_args().cog)
 
     if 2 <=num_files :
-        print('- barplot..')
+        print('- creating barplot..')
         plot_bar(df = count_data, name ='count', n_black = get_args().n_black, size = get_args().bar_size)
         plot_bar(df = ratio_data, name ='ratio', n_black = get_args().n_black, size = get_args().bar_size)
         print(f'==>done')
     
     if 2 <= num_files:
-        print('- PCA..')
+        print('- plotting PCA..')
         for i in [1]:
             CLR_PCA(df = count_data, size = get_args().PCA_size,
-                    delta =i, tag = "count", n_green = get_args().n_green)
+                    delta =i, tag = "count", n_green = get_args().n_green, CLR = True)
         for i in [1]:
             CLR_PCA(df = ratio_data, size = get_args().PCA_size,
-                    delta =i, tag = "ratio", n_green = get_args().n_green)
+                    delta =i, tag = "ratio", n_green = get_args().n_green, CLR = False)
         print(f'==>done')
         
     if 2 <= num_files:
         if num_files <=6:
-            print('- venn diagrams..')
+            print('- plotting venn diagram..')
         if get_args().AA is not None:
             print(f'- finding unique genes of {os.path.splitext(os.path.basename(get_args().AA[0]))[0]}..')
         elif get_args().rps is not None:
