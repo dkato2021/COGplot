@@ -532,7 +532,7 @@ def plot_bar(df = None, name = None, n_black = None, size = None):
     plt.legend(legend)
     fig.savefig(f"./out_{get_args().evalue}/bar/COG_{name}.pdf")
     
-    #コードが汚い
+    #コードが冗長
     # 棒の配置位置、ラベルを用意
     labels = list(df['COG'])
     x = np.array(range(len(labels)))
@@ -612,7 +612,7 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_green = None, CL
 
     plot_PCA(df_pca, pca, df)
     
-    #コードが汚い
+    #コードが冗長
     def plot_PCA_NoName(df_pca, pca, df):
         fig = plt.figure(figsize=(size *2, size * 2))
         ax1 = fig.subplots()
@@ -684,7 +684,7 @@ def plot_venn(dataset = None, size = None):
                 plt.tight_layout()
                 fig.savefig(f"./out_{get_args().evalue}/COGvenn{len(list(dataset.keys()))}Diagrams.pdf")
 
-    #少しコードが汚い
+    #コードが冗長
     unique_COG = []
     for j in range(len(dataset.keys())):
         x = dataset[list(dataset.keys())[j]]
@@ -756,6 +756,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
