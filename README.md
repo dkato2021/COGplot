@@ -31,7 +31,7 @@ $ COGplot.py -rps  [genes1.txt [genes2.txt ...]]
   -bar BAR_SIZE         specify a integer value: graph size of bar plot(default:5)
   -B N_BLACK            Number of bars dyed in black in a bar graph(default:1)
   -PCA PCA_SIZE         specify a integer value: graph size of PCA plot(default:5)
-  -P N_PINK             Number of points dyed in pink in a PCA plot(default:0)
+  -G N_GREEN            Number of points dyed in green in a PCA plot(default:0)
   -venn VENN_SIZE       specify a integer value: graph size of venn diagrams(default:7)
   -cogdb COGDB          path to your cogdb to run rpsblast(default:/home/tmp/db/COG/Cog)
   -cddid CDDID          path to your cddid_COG.tbl(default:/home/tmp/db/COG/cdd2cog/cddid_COG.tbl)
