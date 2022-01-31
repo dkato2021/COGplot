@@ -728,13 +728,13 @@ def main():
                                                           path_to_cog = get_args().cog)
 
     if 2 <=num_files :
-        print('- creating barplot..')
+        print('- barplot..')
         plot_bar(df = count_data, name ='count', n_black = get_args().n_black, size = get_args().bar_size)
         plot_bar(df = ratio_data, name ='ratio', n_black = get_args().n_black, size = get_args().bar_size)
         print(f'==>done')
     
     if 2 <= num_files:
-        print('- plotting PCA..')
+        print('- PCA..')
         for i in [0]:
             CLR_PCA(df = count_data, size = get_args().PCA_size,
                     delta =i, tag = "count", n_green = get_args().n_green, CLR = False)
@@ -745,7 +745,7 @@ def main():
         
     if 2 <= num_files:
         if num_files <=6:
-            print('- plotting venn diagram..')
+            print('- venn diagram..')
         if get_args().AA is not None:
             print(f'- finding unique genes of {os.path.splitext(os.path.basename(get_args().AA[0]))[0]}..')
         elif get_args().rps is not None:
