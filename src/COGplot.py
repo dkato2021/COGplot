@@ -738,7 +738,7 @@ def main():
         for i in [1]:
             CLR_PCA(df = count_data, size = get_args().PCA_size,
                     delta =i, tag = "count", n_green = get_args().n_green, CLR = False)
-        for i in [1]:
+        for i in [0]:
             CLR_PCA(df = ratio_data, size = get_args().PCA_size,
                     delta =i, tag = "ratio", n_green = get_args().n_green, CLR = True)
         print(f'==>done')
