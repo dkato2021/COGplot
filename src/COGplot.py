@@ -32,8 +32,8 @@ def get_args():
                         default=0,type = int, help = 'Number of points dyed in green in a PCA plot(default:0)')
     parser.add_argument('-venn' , dest ='venn_size',
                         default= 7, type = int, help = 'specify a integer value: graph size of venn diagrams(default:7)')
-    parser.add_argument('-t', dest='num_threads',
-                        default=48,type = int, help = 'num_threads in RPS-Blast(default:48)')        
+    #parser.add_argument('-t', dest='num_threads',
+     #                   default=10,type = int, help = 'num_threads(default:10)')        
                         
     parser.add_argument('-cogdb' , dest ='cogdb',
                         default= '/home/tmp/db/COG/Cog', 
@@ -422,7 +422,7 @@ def venn6(labels, ax, names=['A', 'B', 'C', 'D', 'E'], **options):
 
 def run_rpsblast(paths_to_proteins = None, 
                  path_to_cogdb = None, 
-                 evalue = None, num_threads = None):
+                 evalue = None):#, num_threads = None
     from subprocess import Popen
     error1 = "specify the path to your Cog database with cogdb option. (default:/home/tmp/db/COG/Cog)"
     #assert os.path.exists('/home/tmp/db/COG/Cog/'), error1
@@ -434,7 +434,6 @@ def run_rpsblast(paths_to_proteins = None,
     procs = []
 
     for path in paths_to_proteins:
-        if len(procs) <= num_threads-1:
             name = os.path.splitext(os.path.basename(path))[0]
             procs += [Popen(f"rpsblast -query {path} -db {path_to_cogdb} -out ./rps_{get_args().evalue}/{name}.txt -evalue {evalue} -outfmt 6"
                        , shell=True)]
@@ -720,7 +719,7 @@ def main():
         num_files = len(get_args().AA)
         path_to_rpsRes = run_rpsblast(paths_to_proteins = get_args().AA, 
                                       path_to_cogdb = get_args().cogdb, 
-                                      evalue = get_args().evalue, num_threads = get_args().num_threads)
+                                      evalue = get_args().evalue)#, num_threads = get_args().num_threads
 
         count_data, ratio_data, dataset = get_main_dataset(path_to_rpsRes = path_to_rpsRes,
                                                           path_to_cddid = get_args().cddid,
