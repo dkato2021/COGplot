@@ -4,7 +4,6 @@
   - contigの端にある遺伝子だけをCOG解析したいときは　-e オプションでe-valueを変更してください。
 - ベン図を出力できる入力データ数の上限は6です。
 - 入力データ数が４以上の場合はベン図の積集合の要素数とその面積は一致しません。
-- PCAの入力にはCOG分類結果の比率データに1を加えてCLR変換したものを使用しています。
 
 **依存**
 - matplotlib-venn
@@ -17,10 +16,13 @@ $ chmod u+x COGplot.py
 
 ## Usage
 ```
-$ COGplot.py -AA  [genes1.fasta [genes2.fasta ...]]
+$ COGplot.py -AA [genes1.fasta [genes2.fasta ...]]
 
 #rpsblastの結果を入力データとして扱いたい場合
-$ COGplot.py -rps  [genes1.txt [genes2.txt ...]]
+$ COGplot.py -rps [genes1.txt [genes2.txt ...]]
+
+## tips
+$ COGplot.py -AA ./X/* ./Y/* -e 1e-4 1e-12 1e-20
 ```
 ## optional arguments
 ```
