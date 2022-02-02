@@ -9,17 +9,6 @@ $ pip install matplotlib-venn
 $ git clone https://github.com/dkato2021/COGplot.git
 $ chmod u+x COGplot.py
 ```
-
-## Usage
-```
-$ COGplot.py -AA [genes1.fasta [genes2.fasta ...]]
-
-#rpsblastの結果を入力データとして扱いたい場合
-$ COGplot.py -rps [genes1.txt [genes2.txt ...]]
-
-## tips
-$ COGplot.py -AA ./X/* ./Y/* -e 1e-4 1e-12 1e-20
-```
 ## optional arguments
 ```
   -h, --help            show this help message and exit
@@ -35,7 +24,10 @@ $ COGplot.py -AA ./X/* ./Y/* -e 1e-4 1e-12 1e-20
   -cddid CDDID          path to your cddid_COG.tbl(default:/home/tmp/db/COG/cdd2cog/cddid_COG.tbl)
   -cog COG              path to your cog-20.def.tsv(default:/home/tmp/db/COG/cdd2cog/cog-20.def.tsv)
 ```
-
+## tips
+```
+$ COGplot.py -AA ./X/* ./Y/* -e 1e-4 1e-12 1e-20
+```
 ## [図の見方](https://statistics.co.jp/reference/software_R/statR_9_principal.pdf)
 
 ![](./images/X.png)
@@ -43,7 +35,6 @@ $ COGplot.py -AA ./X/* ./Y/* -e 1e-4 1e-12 1e-20
 - https://statistics.co.jp/reference/software_R/statR_9_principal.pdf
 
 ## 出力例
-![](./images/A.pdf)
 ![](./images/COG_count.png)
 ![](./images/COG_ratio.png)
 ![](./images/venn3Diagram.png)
