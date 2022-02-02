@@ -33,7 +33,7 @@ def get_args():
     parser.add_argument('-venn' , dest ='venn_size',
                         default= 7, type = int, help = 'specify a integer value: graph size of venn diagrams(default:7)')
     parser.add_argument('-t', dest='num_threads',
-                        default=10,type = int, help = 'num_threads(default:10)')        
+                        default=48,type = int, help = 'num_threads in RPS-Blast(default:48)')        
                         
     parser.add_argument('-cogdb' , dest ='cogdb',
                         default= '/home/tmp/db/COG/Cog', 
