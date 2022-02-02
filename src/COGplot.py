@@ -717,7 +717,7 @@ def main():
     [print(f'out_{_} ', end='') for _ in get_args().evalue]
     for e in get_args().evalue:
         if get_args().AA is not None:
-            print(f'\n- rpsblast now (e-value = {e})..')
+            print(f'\n- rpsblast (e-value = {e})..')
             num_files = len(get_args().AA)
             path_to_rpsRes = run_rpsblast(paths_to_proteins = get_args().AA, 
                                           path_to_cogdb = get_args().cogdb, 
