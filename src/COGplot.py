@@ -32,7 +32,8 @@ def get_args():
                         default=0,type = int, help = 'Number of points dyed in green in a PCA plot(default:0)')
     parser.add_argument('-venn' , dest ='venn_size',
                         default= 7, type = int, help = 'specify a integer value: graph size of venn diagrams(default:7)')
-                        
+    #parser.add_argument('-t', dest='num_threads',
+    #                    default=10,type = int, help = 'num_threads(default:10)')        
                         
     parser.add_argument('-cogdb' , dest ='cogdb',
                         default= '/home/tmp/db/COG/Cog', 
@@ -422,7 +423,7 @@ def venn6(labels, ax, names=['A', 'B', 'C', 'D', 'E'], **options):
 def run_rpsblast(paths_to_proteins = None, 
                  path_to_cogdb = None, 
                  evalue = None):
-    
+    from subprocess import Popen
     error1 = "specify the path to your Cog database with cogdb option. (default:/home/tmp/db/COG/Cog)"
     #assert os.path.exists('/home/tmp/db/COG/Cog/'), error1
     
@@ -430,13 +431,17 @@ def run_rpsblast(paths_to_proteins = None,
         os.system(f'mkdir rps_{get_args().evalue}')
     
     path_to_rpsRes = []
+    procs = []
+
     for path in paths_to_proteins:
         name = os.path.splitext(os.path.basename(path))[0]
-        subprocess.run(f"rpsblast -query {path} -db {path_to_cogdb} -out ./rps_{get_args().evalue}/{name}.txt -evalue {evalue} -outfmt 6"
-                       , shell=True)
-        path_to_rpsRes.append(f"./rps_{get_args().evalue}/{name}.txt")
-    return path_to_rpsRes
+        procs += [Popen(f"rpsblast -query {path} -db {path_to_cogdb} -out ./rps_{get_args().evalue}/{name}.txt -evalue {evalue} -outfmt 6"
+                   , shell=True)]
 
+        path_to_rpsRes.append(f"./rps_{get_args().evalue}/{name}.txt")
+    
+    [p.wait() for p in procs]
+    return path_to_rpsRes
 
 def preprocess(rps = None,
                cddid = None,
@@ -756,6 +761,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
