@@ -16,10 +16,10 @@ from tqdm import tqdm
 
 def get_args():
     parser = argparse.ArgumentParser(description='dkato. November, 2021')
-    parser.add_argument('-rps' , dest ='rps', nargs='*',
-                        help = 'path to your results of rpsblast')
     parser.add_argument('-AA' , dest ='AA', nargs='*',
                         help = 'paths　to your amino acids files of genes(Venn diagram is not output if there are 6 or more files)')
+    parser.add_argument('-rps' , dest ='rps', nargs='*',
+                        help = 'path to your results of rpsblast')
     parser.add_argument('-e' , dest ='evalue', nargs='*',
                         default= ['1e-28'],  help = 'evalue in rpsblast(default:1e-28)')
     parser.add_argument('-bar' , dest ='bar_size',
@@ -771,3 +771,5 @@ if __name__ == "__main__":
 
 
 
+
+    
