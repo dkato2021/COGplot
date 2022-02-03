@@ -1,5 +1,5 @@
 # COGplot
-**遺伝子のアミノ酸データをCOG分類して棒グラフ、ベン図、固有遺伝子の一覧表とPCAの図を出力するスクリプト**
+**遺伝子のアミノ酸配列データをCOG分類して棒グラフ、ベン図、PCAの図と固有遺伝子の一覧表を出力します**
 
 **依存**
 - matplotlib-venn
@@ -17,8 +17,8 @@ $ COGplot.py -AA gene1.fasta gene2.fasta
 ## optional arguments
 ```
   -h, --help            show this help message and exit
-  -rps [RPS [RPS ...]]  path to your results of rpsblast
   -AA [AA [AA ...]]     paths　to your amino acids files of genes(Venn diagram is not output if there are 6 or more files)
+  -rps [RPS [RPS ...]]  path to your results of rpsblast
   -e EVALUE             evalue in rpsblast(default:1e-28)
   -bar BAR_SIZE         specify a integer value: graph size of bar plot(default:5)
   -B N_BLACK            Number of bars dyed in black in a bar graph(default:1)
