@@ -9,6 +9,11 @@ $ pip install matplotlib-venn
 $ git clone https://github.com/dkato2021/COGplot.git
 $ chmod u+x COGplot.py
 ```
+## Usage
+```
+$ COGplot.py -AA gene1.fasta gene2.fasta
+```
+
 ## optional arguments
 ```
   -h, --help            show this help message and exit
