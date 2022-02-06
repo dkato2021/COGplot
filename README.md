@@ -47,8 +47,9 @@ Reference
 ![](./_/COG_ratio.png)
 ![](./_/venn3Diagram.png)
 ![](./_/COGvenn3Diagrams.png)
-
-![](./_/3.png)
-![](./_/4.png)
 ![](./_/w.png)
 ![](./_/q.png)
+![](./_/1.png)
+![](./_/1.png)
+![](./_/3.png)
+![](./_/4.png)
