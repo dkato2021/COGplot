@@ -35,21 +35,21 @@ optional arguments:
 $ COGplot.py -AA ./X/* ./Y/* -e 1e-4 1e-12 1e-20
 ```
 ## How to interpret the PCA diagram
-![](./images/X.png)
+![](./_/X.png)
 Reference
 - https://statistics.co.jp/reference/software_R/statR_9_principal.pdf
 
 ## How to detect unique genes
-![](./images/unique_ver2.png)
+![](./_/unique_ver2.png)
 
 ## Output Example
-![](./images/COG_count.png)
-![](./images/COG_ratio.png)
-![](./images/venn3Diagram.png)
-![](./images/COGvenn3Diagrams.png)
-![](./images/1.png)
-![](./images/2.png)
-![](./images/3.png)
-![](./images/4.png)
-![](./images/w.png)
-![](./images/q.png)
+![](./_/COG_count.png)
+![](./_/COG_ratio.png)
+![](./_/venn3Diagram.png)
+![](./_/COGvenn3Diagrams.png)
+![](./_/1.png)
+![](./_/2.png)
+![](./_/3.png)
+![](./_/4.png)
+![](./_/w.png)
+![](./_/q.png)
