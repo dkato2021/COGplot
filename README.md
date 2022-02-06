@@ -34,13 +34,13 @@ optional arguments:
 ```
 $ COGplot.py -AA ./X/* ./Y/* -e 1e-4 1e-12 1e-20
 ```
+## How to detect unique genes
+![](./_/unique_ver2.png)
 ## How to interpret the PCA diagram
 ![](./_/X.png)
 Reference
 - https://statistics.co.jp/reference/software_R/statR_9_principal.pdf
 
-## How to detect unique genes
-![](./_/unique_ver2.png)
 
 ## Output Example
 ![](./_/COG_count.png)
