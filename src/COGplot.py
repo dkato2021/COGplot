@@ -729,7 +729,7 @@ def find_unique(dataset = None, num_unique = None, evalue = None):
         gene_name+=set(list(dataset[f"{tmp[0]}"]['gene_name'][x]))
     #if len(uniquegene[f"{tmp[0]}_uniquegene"])==0:
     pd.DataFrame([uniquegene[f"{col}_uniquegene"], gene, gene_name, Group, name],
-                index=[f"{col}_uniquegene", "gene", "gene name", 'Group', 'one of the names']).T.to_csv(f"./out_{evalue}/COGdata/unique_genes.csv")
+                index=[f"{col}_uniquegene", "gene", "gene name", 'Group', 'one of the names']).T.to_csv(f"./out_{evalue}/COGdata/unique_genes_of_{get_args().num_unique}files_.csv")
     
 def main():
     print(f'Output directory = ', end='')
