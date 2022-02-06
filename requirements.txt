@@ -1,2 +1,0 @@
-rpsblast
-matplotlib-venn
