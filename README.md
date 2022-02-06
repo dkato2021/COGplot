@@ -1,6 +1,4 @@
 # COGplot
-**遺伝子のアミノ酸配列データをCOG分類して棒グラフ、ベン図、PCAの図と固有遺伝子の一覧表を出力します**
-
 **dependency**
 - matplotlib-venn
 ## Installation
