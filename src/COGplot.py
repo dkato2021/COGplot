@@ -24,11 +24,11 @@ def get_args():
                         default= ['1e-28'],  help = 'evalue in rpsblast(default:1e-28)')
     parser.add_argument('-bar' , dest ='bar_size',
                         default= 5, type = int, help = 'specify a integer value: graph size of bar plot(default:5)')
-    parser.add_argument('-B', dest='n_black',
+    parser.add_argument('-b', dest='n_black',
                         default=1,type = int, help = 'Number of bars dyed in black in a bar graph(default:1)')
     parser.add_argument('-PCA' , dest ='PCA_size',
                         default= 5, type = int, help = 'specify a integer value: graph size of PCA plot(default:5)')
-    parser.add_argument('-G', dest='n_green',
+    parser.add_argument('-g', dest='n_green',
                         default=0,type = int, help = 'Number of points dyed in green in a PCA plot(default:0)')
     parser.add_argument('-venn' , dest ='venn_size',
                         default= 7, type = int, help = 'specify a integer value: graph size of venn diagrams(default:7)')
@@ -603,7 +603,7 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_green = None, CL
     def plot_PCA(df_pca, pca, df, evalue):
         fig = plt.figure(figsize=(size *2, size * 2))
         ax1 = fig.subplots()
-        ax1.scatter(df_pca.PCA1[:n_green], df_pca.PCA2[:n_green], alpha=0.8, c='lime')
+        ax1.scatter(df_pca.PCA1[:n_green], df_pca.PCA2[:n_green], alpha=0.8, c='darkorange')
         ax1.scatter(df_pca.PCA1[n_green:], df_pca.PCA2[n_green:], alpha=0.8)
         for x, y, name in zip(df_pca.PCA1, df_pca.PCA2, df.columns[1:]):
             ax1.text(x, y, name)
@@ -629,7 +629,7 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_green = None, CL
     def plot_PCA_NoName(df_pca, pca, df, evalue):
         fig = plt.figure(figsize=(size *2, size * 2))
         ax1 = fig.subplots()
-        ax1.scatter(df_pca.PCA1[:n_green], df_pca.PCA2[:n_green], alpha=0.8, c='lime')
+        ax1.scatter(df_pca.PCA1[:n_green], df_pca.PCA2[:n_green], alpha=0.8, c='darkorange')
         ax1.scatter(df_pca.PCA1[n_green:], df_pca.PCA2[n_green:], alpha=0.8)
         ax1.grid()
         ax1.set_xlabel(f"PC1({(pca.explained_variance_ratio_[0]*100).round(2)}%)")
