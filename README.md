@@ -45,7 +45,7 @@ $ COGplot.py -AA ./X/* ./Y/* -e 1e-4 1e-12 1e-20
 ## How to search for unique genes
 
 
-## 出力例
+## Output Example
 ![](./images/COG_count.png)
 ![](./images/COG_ratio.png)
 ![](./images/venn3Diagram.png)
