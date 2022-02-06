@@ -16,10 +16,10 @@ from tqdm import tqdm
 
 def get_args():
     parser = argparse.ArgumentParser(description='dkato. November, 2021')
-    parser.add_argument('-AA' , dest ='AA', nargs='*',
-                        help = 'paths　to your amino acids files of genes(Venn diagram is not output if there are 6 or more files)')
     parser.add_argument('-rps' , dest ='rps', nargs='*',
                         help = 'path to your results of rpsblast')
+    parser.add_argument('-AA' , dest ='AA', nargs='*',
+                        help = 'paths　to your amino acids files of genes(Venn diagram is not output if there are 6 or more files)')
     parser.add_argument('-e' , dest ='evalue', nargs='*',
                         default= ['1e-28'],  help = 'evalue in rpsblast(default:1e-28)')
     parser.add_argument('-bar' , dest ='bar_size',
@@ -32,8 +32,11 @@ def get_args():
                         default=0,type = int, help = 'Number of points dyed in green in a PCA plot(default:0)')
     parser.add_argument('-venn' , dest ='venn_size',
                         default= 7, type = int, help = 'specify a integer value: graph size of venn diagrams(default:7)')
-    #parser.add_argument('-t', dest='num_threads',
-     #                   default=10,type = int, help = 'num_threads(default:10)')        
+    parser.add_argument('-u' , dest ='num_unique',
+                        default= 1, type = int,
+                        help = 'Number of files to search for unique genes (number of files from the top)(default:1)')
+    parser.add_argument('-t', dest='num_threads',
+                       default=4,type = int, help = 'num_threads(default:4)')        
                         
     parser.add_argument('-cogdb' , dest ='cogdb',
                         default= '/home/tmp/db/COG/Cog', 
@@ -422,7 +425,7 @@ def venn6(labels, ax, names=['A', 'B', 'C', 'D', 'E'], **options):
 
 def run_rpsblast(paths_to_proteins = None, 
                  path_to_cogdb = None, 
-                 evalue = None):#, num_threads = None
+                 evalue = None, num_threads = None):
     from subprocess import Popen
     error1 = "specify the path to your Cog database with cogdb option. (default:/home/tmp/db/COG/Cog)"
     #assert os.path.exists('/home/tmp/db/COG/Cog/'), error1
@@ -430,17 +433,22 @@ def run_rpsblast(paths_to_proteins = None,
     if f'rps_{evalue}' not in os.listdir(path='./'):
         os.system(f'mkdir rps_{evalue}')
     
+    def split_list(lst, n):  
+        for i in range(0, len(lst), n): 
+            yield lst[i:i + n] 
+        
     path_to_rpsRes = []
-    procs = []
+    block_paths = list(split_list(paths_to_proteins, num_threads))
+    for block_path in block_paths:
+        procs = []
+        for path in block_path:
+                name = os.path.splitext(os.path.basename(path))[0]
+                procs += [Popen(f"rpsblast -query {path} -db {path_to_cogdb} -out ./rps_{evalue}/{name}.txt -evalue {evalue} -outfmt 6"
+                           , shell=True)]
 
-    for path in paths_to_proteins:
-            name = os.path.splitext(os.path.basename(path))[0]
-            procs += [Popen(f"rpsblast -query {path} -db {path_to_cogdb} -out ./rps_{evalue}/{name}.txt -evalue {evalue} -outfmt 6"
-                       , shell=True)]
-
-            path_to_rpsRes.append(f"./rps_{evalue}/{name}.txt")
+                path_to_rpsRes.append(f"./rps_{evalue}/{name}.txt")
     
-    [p.wait() for p in procs]
+        [p.wait() for p in procs]
     return path_to_rpsRes
 
 def preprocess(rps = None,
@@ -595,7 +603,7 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_green = None, CL
     def plot_PCA(df_pca, pca, df, evalue):
         fig = plt.figure(figsize=(size *2, size * 2))
         ax1 = fig.subplots()
-        ax1.scatter(df_pca.PCA1[:n_green], df_pca.PCA2[:n_green], alpha=0.8, c='g')
+        ax1.scatter(df_pca.PCA1[:n_green], df_pca.PCA2[:n_green], alpha=0.8, c='lime')
         ax1.scatter(df_pca.PCA1[n_green:], df_pca.PCA2[n_green:], alpha=0.8)
         for x, y, name in zip(df_pca.PCA1, df_pca.PCA2, df.columns[1:]):
             ax1.text(x, y, name)
@@ -621,7 +629,7 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_green = None, CL
     def plot_PCA_NoName(df_pca, pca, df, evalue):
         fig = plt.figure(figsize=(size *2, size * 2))
         ax1 = fig.subplots()
-        ax1.scatter(df_pca.PCA1[:n_green], df_pca.PCA2[:n_green], alpha=0.8, c='g')
+        ax1.scatter(df_pca.PCA1[:n_green], df_pca.PCA2[:n_green], alpha=0.8, c='lime')
         ax1.scatter(df_pca.PCA1[n_green:], df_pca.PCA2[n_green:], alpha=0.8)
         ax1.grid()
         ax1.set_xlabel(f"PC1({(pca.explained_variance_ratio_[0]*100).round(2)}%)")
@@ -689,39 +697,50 @@ def plot_venn(dataset = None, size = None, evalue = None):
                 plt.tight_layout()
                 fig.savefig(f"./out_{evalue}/COGvenn{len(list(dataset.keys()))}Diagrams.pdf")
 
-    #コードが冗長
+def find_unique(dataset = None, num_unique = None, evalue = None):
+    
     unique_COG = []
     for j in range(len(dataset.keys())):
         x = dataset[list(dataset.keys())[j]]
         unique_COG.append(set(x['COG'].unique()))
+
     eigengene = {}
     _ = unique_COG
     tmp = list(dataset.keys())
-    eigengene[f"{tmp[0]}_eigengene"] = list(_[0])
-    for i in range(1, len(tmp)):
-        eigengene[f"{tmp[0]}_eigengene"] = list( set(eigengene[f"{tmp[0]}_eigengene"]) - set(list(_[i])))
+    col = tmp[0]
+    for i in range(num_unique-1):
+        col = col + "_AND_" + tmp[i]
+
+
+    eigengene[f"{col}_eigengene"] = list(_[0])
+    for i in range(1, num_unique):
+        eigengene[f"{col}_eigengene"] = list( set(eigengene[f"{col}_eigengene"]) & set(list(_[i])))
+
+    for i in range(num_unique, len(tmp)):
+        eigengene[f"{col}_eigengene"] = list( set(eigengene[f"{col}_eigengene"]) - set(list(_[i])))
 
     Group = []
     name, gene, gene_name =[], [], [] 
-    for i in range(len(eigengene[f"{tmp[0]}_eigengene"])):
-        x = dataset[f"{tmp[0]}"].COG==eigengene[f"{tmp[0]}_eigengene"][i]
+    for i in range(len(eigengene[f"{col}_eigengene"])):
+        x = dataset[f"{tmp[0]}"].COG==eigengene[f"{col}_eigengene"][i]
         Group+=set(list(dataset[f"{tmp[0]}"]['Group'][x]))
-        #assert len(set(list(dataset[f"{tmp[0]}"]['cdd_id'][x])))==1, i
         name+=set([list(dataset[f"{tmp[0]}"]['cdd_id'][x])[0]])
         gene+=set(list(dataset[f"{tmp[0]}"]['gene'][x]))
         gene_name+=set(list(dataset[f"{tmp[0]}"]['gene_name'][x]))
-    pd.DataFrame([eigengene[f"{tmp[0]}_eigengene"], gene, gene_name, Group, name],
-             index=[f"{tmp[0]}_eigengene", "gene", "gene name", 'Group', 'one of the names']).T.to_csv(f"./out_{evalue}/COGdata/{tmp[0]}_uniquegene.csv")
+    #if len(eigengene[f"{tmp[0]}_eigengene"])==0:
+    pd.DataFrame([eigengene[f"{col}_eigengene"], gene, gene_name, Group, name],
+                index=[f"{col}_eigengene", "gene", "gene name", 'Group', 'one of the names']).T.to_csv(f"./out_{evalue}/COGdata/unique_genes.csv")
+    
 def main():
     print(f'Output directory = ', end='')
     [print(f'out_{_} ', end='') for _ in get_args().evalue]
     for e in get_args().evalue:
         if get_args().AA is not None:
-            print(f'\n- rpsblast (e-value = {e})..')
+            print(f'\n- rpsblast with {get_args().num_threads} cores (e-value = {e})..')
             num_files = len(get_args().AA)
             path_to_rpsRes = run_rpsblast(paths_to_proteins = get_args().AA, 
                                           path_to_cogdb = get_args().cogdb, 
-                                          evalue = e)#, num_threads = get_args().num_threads
+                                          evalue = e, num_threads = get_args().num_threads)
     
             count_data, ratio_data, dataset = get_main_dataset(path_to_rpsRes = path_to_rpsRes,
                                                               path_to_cddid = get_args().cddid,
@@ -754,11 +773,18 @@ def main():
             if num_files <=6:
                 print('- venn diagram..')
             if get_args().AA is not None:
-                print(f'- finding unique genes of {os.path.splitext(os.path.basename(get_args().AA[0]))[0]}..', end ='')
+                target = os.path.splitext(os.path.basename(get_args().AA[0]))[0]
+                for i in range(get_args().num_unique-1):
+                    target = target + "_AND_" + os.path.splitext(os.path.basename(get_args().AA[i]))[0]
+                
             elif get_args().rps is not None:
-                print(f'- finding unique genes of {os.path.splitext(os.path.basename(get_args().rps[0]))[0]}..', end ='')
+                target = os.path.splitext(os.path.basename(get_args().rps[0]))[0]
+                for i in range(get_args().num_unique-1):
+                    target = target + "_AND_" + os.path.splitext(os.path.basename(get_args().rps[i]))[0]
             
+            print(f'- finding unique genes of {target}..', end ='')
             plot_venn(dataset = dataset, size = get_args().venn_size, evalue = e)
+            find_unique(dataset = dataset, num_unique = get_args().num_unique , evalue = e)
             print(f'done!')
 
 if __name__ == "__main__":
@@ -772,4 +798,3 @@ if __name__ == "__main__":
 
 
 
-    
