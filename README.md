@@ -53,3 +53,5 @@ $ COGplot.py -AA ./X/* ./Y/* -e 1e-4 1e-12 1e-20
 ![](./images/2.png)
 ![](./images/3.png)
 ![](./images/4.png)
+![](./images/w.png)
+![](./images/q.png)
