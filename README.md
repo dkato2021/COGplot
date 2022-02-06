@@ -41,7 +41,7 @@ $ COGplot.py -AA ./X/* ./Y/* -e 1e-4 1e-12 1e-20
 参考文献
 - https://statistics.co.jp/reference/software_R/statR_9_principal.pdf
 
-## How to search for unique genes
+## How to detect unique genes
 ![](./images/unique_ver2.png)
 
 ## Output Example
@@ -53,5 +53,3 @@ $ COGplot.py -AA ./X/* ./Y/* -e 1e-4 1e-12 1e-20
 ![](./images/2.png)
 ![](./images/3.png)
 ![](./images/4.png)
-![](./images/PCA_COG.png)
-![](./images/annotation.png)
