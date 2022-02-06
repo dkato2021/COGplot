@@ -15,11 +15,11 @@ from collections import Counter, Iterable
 from tqdm import tqdm
 
 def get_args():
-    parser = argparse.ArgumentParser(description='dkato. November, 2021')
-    parser.add_argument('-rps' , dest ='rps', nargs='*',
-                        help = 'path to your results of rpsblast')
+    parser = argparse.ArgumentParser(description='dkato. Feb. 2022')
     parser.add_argument('-AA' , dest ='AA', nargs='*',
                         help = 'paths　to your amino acids files of genes(Venn diagram is not output if there are 6 or more files)')
+    parser.add_argument('-rps' , dest ='rps', nargs='*',
+                        help = 'path to your results of rpsblast')
     parser.add_argument('-e' , dest ='evalue', nargs='*',
                         default= ['1e-28'],  help = 'evalue in rpsblast(default:1e-28)')
     parser.add_argument('-bar' , dest ='bar_size',
@@ -619,8 +619,8 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_green = None, CL
             ax2.arrow(x=0,y=0, dx=x, dy=y,
                      width=.0001, length_includes_head=True,color='m')
         ax2.scatter(pca.components_[0],  pca.components_[1], alpha=0, color='m')
-        ax1.set_title(f"PC1 Loading", fontsize=20/size*2)
-        ax2.set_ylabel(f"PC2 Loading", fontsize=20/size*2)
+        ax1.set_title(f"PC1 Loading", fontsize=20/size*2, color='m')
+        ax2.set_ylabel(f"PC2 Loading", fontsize=20/size*2, color='m')
         fig.savefig(f"./out_{evalue}/PCA_{tag}/PCA_{tag}_{delta}/PCA_COG_{tag}_{delta}_withLoadingFactor.pdf")
 
     plot_PCA(df_pca, pca, df, evalue)
@@ -641,8 +641,8 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_green = None, CL
             ax2.arrow(x=0,y=0, dx=x, dy=y,
                      width=.0001, length_includes_head=True,color='m')
         ax2.scatter(pca.components_[0],  pca.components_[1], alpha=0, color='m')
-        ax1.set_title(f"PC1 Loading", fontsize=20/size*2)
-        ax2.set_ylabel(f"PC2 Loading", fontsize=20/size*2)
+        ax1.set_title(f"PC1 Loading", fontsize=20/size*2, color='m')
+        ax2.set_ylabel(f"PC2 Loading", fontsize=20/size*2, color='m')
         fig.savefig(f"./out_{evalue}/PCA_{tag}/PCA_{tag}_{delta}/PCA_COG_{tag}_{delta}_NoName.pdf")
 
     plot_PCA_NoName(df_pca, pca, df, evalue)
