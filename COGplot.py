@@ -12,7 +12,6 @@ import matplotlib_venn
 import math
 from itertools import chain
 from collections import Counter, Iterable
-from tqdm import tqdm
 
 def get_args():
     parser = argparse.ArgumentParser(description='dkato. Feb. 2022')
