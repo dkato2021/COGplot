@@ -704,7 +704,7 @@ def find_unique(dataset = None, num_unique = None, evalue = None):
         x = dataset[list(dataset.keys())[j]]
         unique_COG.append(set(x['COG'].unique()))
 
-    eigengene = {}
+    uniquegene = {}
     _ = unique_COG
     tmp = list(dataset.keys())
     col = tmp[0]
@@ -712,24 +712,24 @@ def find_unique(dataset = None, num_unique = None, evalue = None):
         col = col + "_AND_" + tmp[i]
 
 
-    eigengene[f"{col}_eigengene"] = list(_[0])
+    uniquegene[f"{col}_uniquegene"] = list(_[0])
     for i in range(1, num_unique):
-        eigengene[f"{col}_eigengene"] = list( set(eigengene[f"{col}_eigengene"]) & set(list(_[i])))
+        uniquegene[f"{col}_uniquegene"] = list( set(uniquegene[f"{col}_uniquegene"]) & set(list(_[i])))
 
     for i in range(num_unique, len(tmp)):
-        eigengene[f"{col}_eigengene"] = list( set(eigengene[f"{col}_eigengene"]) - set(list(_[i])))
+        uniquegene[f"{col}_uniquegene"] = list( set(uniquegene[f"{col}_uniquegene"]) - set(list(_[i])))
 
     Group = []
     name, gene, gene_name =[], [], [] 
-    for i in range(len(eigengene[f"{col}_eigengene"])):
-        x = dataset[f"{tmp[0]}"].COG==eigengene[f"{col}_eigengene"][i]
+    for i in range(len(uniquegene[f"{col}_uniquegene"])):
+        x = dataset[f"{tmp[0]}"].COG==uniquegene[f"{col}_uniquegene"][i]
         Group+=set(list(dataset[f"{tmp[0]}"]['Group'][x]))
         name+=set([list(dataset[f"{tmp[0]}"]['cdd_id'][x])[0]])
         gene+=set(list(dataset[f"{tmp[0]}"]['gene'][x]))
         gene_name+=set(list(dataset[f"{tmp[0]}"]['gene_name'][x]))
-    #if len(eigengene[f"{tmp[0]}_eigengene"])==0:
-    pd.DataFrame([eigengene[f"{col}_eigengene"], gene, gene_name, Group, name],
-                index=[f"{col}_eigengene", "gene", "gene name", 'Group', 'one of the names']).T.to_csv(f"./out_{evalue}/COGdata/unique_genes.csv")
+    #if len(uniquegene[f"{tmp[0]}_uniquegene"])==0:
+    pd.DataFrame([uniquegene[f"{col}_uniquegene"], gene, gene_name, Group, name],
+                index=[f"{col}_uniquegene", "gene", "gene name", 'Group', 'one of the names']).T.to_csv(f"./out_{evalue}/COGdata/unique_genes.csv")
     
 def main():
     print(f'Output directory = ', end='')
