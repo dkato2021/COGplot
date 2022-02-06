@@ -5,7 +5,7 @@
 - matplotlib-venn
 ## Installation
 ```
-$ #pip install matplotlib-venn
+$ pip install matplotlib-venn
 $ git clone https://github.com/dkato2021/COGplot.git
 $ chmod u+x COGplot.py
 ```
