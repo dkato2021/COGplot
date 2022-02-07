@@ -1,8 +1,7 @@
 # COGplot
 **dependency**
 - matplotlib-venn  
-**How to determine the Evalue (unimplemented)**  
-![](./_/lossver2.png)
+
 ## Installation
 ```
 $ pip install matplotlib-venn
@@ -54,5 +53,6 @@ Reference
 ![](./_/q.png)
 ![](./_/1.png)
 ![](./_/3.png)
-
+### How to determine the Evalue (unimplemented)
+![](./_/lossver2.png)
 
