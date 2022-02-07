@@ -41,7 +41,7 @@ $ COGplot.py -AA ./X/* ./Y/* -e 1e-4 1e-12 1e-20
 Reference
 - https://statistics.co.jp/reference/software_R/statR_9_principal.pdf
 
-## How to determine the E-value (unimplemented)
+## How to determine the Evalue (unimplemented)
 ![](./_/loss.png)
 
 ## Output Example
