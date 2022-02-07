@@ -707,7 +707,7 @@ def find_unique(dataset = None, num_unique = None, evalue = None):
     _ = unique_COG
     tmp = list(dataset.keys())
     col = tmp[0]
-    for i in range(num_unique-1):
+    for i in range(1, num_unique):
         col = col + "_AND_" + tmp[i]
 
 
@@ -788,6 +788,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
