@@ -41,8 +41,7 @@ $ COGplot.py -AA ./X/* ./Y/* -e 1e-4 1e-12 1e-20
 Reference
 - https://statistics.co.jp/reference/software_R/statR_9_principal.pdf
 
-## How to determine the Evalue (unimplemented)
-![](./_/lossver2.png)
+
 
 ## Output Example
 ![](./_/COG_count.png)
@@ -54,4 +53,5 @@ Reference
 ![](./_/1.png)
 ![](./_/3.png)
 
-
+## How to determine the Evalue (unimplemented)
+![](./_/lossver2.png)
