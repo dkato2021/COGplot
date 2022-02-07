@@ -42,7 +42,7 @@ Reference
 - https://statistics.co.jp/reference/software_R/statR_9_principal.pdf
 
 ## How to determine the Evalue (unimplemented)
-![](./_/loss.png)
+![](./_/lossver2.png)
 
 ## Output Example
 ![](./_/COG_count.png)
