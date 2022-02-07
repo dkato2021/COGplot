@@ -41,9 +41,6 @@ $ COGplot.py -AA ./X/* ./Y/* -e 1e-4 1e-12 1e-20
 ![](./_/X.png)
 Reference
 - https://statistics.co.jp/reference/software_R/statR_9_principal.pdf
-
-
-
 ## Output Example
 ![](./_/COG_count.png)
 ![](./_/COG_ratio.png)
@@ -53,6 +50,6 @@ Reference
 ![](./_/q.png)
 ![](./_/1.png)
 ![](./_/3.png)
-### How to determine the Evalue (unimplemented)
+## How to determine the Evalue (unimplemented)
 ![](./_/lossver2.png)
 
