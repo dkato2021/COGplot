@@ -10,7 +10,7 @@ $ chmod u+x COGplot.py
 ```
 ## Usage
 ```
-$ COGplot.py -AA gene1.fasta gene2.fasta
+$ COGplot.py -AA gene1.fasta gene2.fasta ...
 ```
 
 ## optional arguments
