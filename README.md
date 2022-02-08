@@ -35,6 +35,9 @@ optional arguments:
 ```
 $ COGplot.py -AA ./X/* ./Y/* -e 1e-4 1e-12 1e-20
 ```
+## How to determine the Evalue
+![](./_/lossver7.png)
+
 ## How to detect unique genes
 ![](./_/unique_ver2.png)
 ## How to interpret the PCA diagram
@@ -50,6 +53,5 @@ Reference
 ![](./_/q.png)
 ![](./_/1.png)
 ![](./_/3.png)
-## How to determine the Evalue (This is an example, as it is not implemented yet)
-![](./_/lossver7.png)
+
 
