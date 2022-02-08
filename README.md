@@ -51,5 +51,5 @@ Reference
 ![](./_/1.png)
 ![](./_/3.png)
 ## How to determine the Evalue (This is an example, as it is not implemented yet)
-![](./_/lossver6.png)
+![](./_/lossver7.png)
 
