@@ -1,6 +1,3 @@
-$$ L(e\hspace{1mm}|\hspace{1mm}e') = \frac{1}{N}\sum_{S}\sum_{C}|r_{e,c,s} - r_{e',c,s}| $$
-
-
 # COGplot
 **dependency**
 - matplotlib-venn  
