@@ -35,7 +35,7 @@ def get_args():
                         default= 1, type = int,
                         help = 'Number of files to search for unique genes (number of files from the top)(default:1)')
     parser.add_argument('-t', dest='num_threads',
-                       default=4,type = int, help = 'num_threads(default:4)')        
+                       default=42,type = int, help = 'num_threads(default:42)')        
                         
     parser.add_argument('-cogdb' , dest ='cogdb',
                         default= '/home/tmp/db/COG/Cog', 
@@ -735,7 +735,7 @@ def main():
     [print(f'out_{_} ', end='') for _ in get_args().evalue]
     for e in get_args().evalue:
         if get_args().AA is not None:
-            print(f'\n- rpsblast with {get_args().num_threads} cores (e-value = {e})..')
+            print(f'\n- rpsblast with up to {get_args().num_threads} cores (e-value = {e})..')
             num_files = len(get_args().AA)
             path_to_rpsRes = run_rpsblast(paths_to_proteins = get_args().AA, 
                                           path_to_cogdb = get_args().cogdb, 
