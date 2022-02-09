@@ -54,5 +54,5 @@ Reference
 ![](./_/q.png)
 ![](./_/1.png)
 ![](./_/3.png)
-
+![](./_/loss_graphT.png)
 
