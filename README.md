@@ -37,7 +37,7 @@ $ COGplot.py -AA ./X/* ./Y/* -e 1e-4 1e-12 1e-20
 ```
 ## How to determine the Evalue
 ![](./_/lossver9.png)
-![](./_/loss_graphT.png)
+
 
 ## How to detect unique genes
 ![](./_/unique_ver2.png)
@@ -54,5 +54,4 @@ Reference
 ![](./_/q.png)
 ![](./_/1.png)
 ![](./_/3.png)
-![](./_/loss_graphT.png)
 
