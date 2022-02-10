@@ -40,7 +40,7 @@ $ COGplot.py -AA ./X/* ./Y/* -e 1e-4 1e-12 1e-20
 ![](./_/lossT.png)
 ![](./_/lossA2.png)
 ![](./_/lossY.png)
-![](./_/lossT.png)
+![](./_/lossTa.png)
 ## How to detect unique genes
 ![](./_/unique_ver2.png)
 ## How to interpret the PCA diagram
