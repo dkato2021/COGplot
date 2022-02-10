@@ -39,6 +39,7 @@ $ COGplot.py -AA ./X/* ./Y/* -e 1e-4 1e-12 1e-20
 ![](./_/lossver11.png)
 ![](./_/lossT.png)
 ![](./_/lossA2.png)
+![](./_/lossA150.png)
 ![](./_/lossY.png)
 ![](./_/lossTa.png)
 ## How to detect unique genes
