@@ -27,8 +27,8 @@ def get_args():
                         default=1,type = int, help = 'Number of bars dyed in black in a bar graph(default:1)')
     parser.add_argument('-PCA' , dest ='PCA_size',
                         default= 5, type = int, help = 'specify a integer value: graph size of PCA plot(default:5)')
-    parser.add_argument('-g', dest='n_green',
-                        default=0,type = int, help = 'Number of points dyed in green in a PCA plot(default:0)')
+    parser.add_argument('-o', dest='n_orange',
+                        default=0,type = int, help = 'Number of points dyed in orange in a PCA plot(default:0)')
     parser.add_argument('-venn' , dest ='venn_size',
                         default= 7, type = int, help = 'specify a integer value: graph size of venn diagrams(default:7)')
     parser.add_argument('-u' , dest ='num_unique',
@@ -570,7 +570,7 @@ def plot_bar(df = None, name = None, n_black = None, size = None, evalue = None)
     fig.savefig(f"./out_{evalue}/bar/COG_{name}_NoColor.pdf")
     
     
-def CLR_PCA(df = None, size = None, delta = None, tag = None, n_green = None, CLR = None, evalue = None):#各行にCOG。
+def CLR_PCA(df = None, size = None, delta = None, tag = None, n_orange = None, CLR = None, evalue = None):#各行にCOG。
     if f'PCA_{tag}' not in os.listdir(path=f"./out_{evalue}/"):
         os.system(f'mkdir ./out_{evalue}/PCA_{tag}/') 
     if f'PCA_{tag}_{delta}' not in os.listdir(path=f"./out_{evalue}/PCA_{tag}/"):
@@ -602,8 +602,8 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_green = None, CL
     def plot_PCA(df_pca, pca, df, evalue):
         fig = plt.figure(figsize=(size *2, size * 2))
         ax1 = fig.subplots()
-        ax1.scatter(df_pca.PCA1[:n_green], df_pca.PCA2[:n_green], alpha=0.8, c='darkorange')
-        ax1.scatter(df_pca.PCA1[n_green:], df_pca.PCA2[n_green:], alpha=0.8)
+        ax1.scatter(df_pca.PCA1[:n_orange], df_pca.PCA2[:n_orange], alpha=0.8, c='darkorange')
+        ax1.scatter(df_pca.PCA1[n_orange:], df_pca.PCA2[n_orange:], alpha=0.8)
         for x, y, name in zip(df_pca.PCA1, df_pca.PCA2, df.columns[1:]):
             ax1.text(x, y, name)
         
@@ -628,8 +628,8 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_green = None, CL
     def plot_PCA_NoName(df_pca, pca, df, evalue):
         fig = plt.figure(figsize=(size *2, size * 2))
         ax1 = fig.subplots()
-        ax1.scatter(df_pca.PCA1[:n_green], df_pca.PCA2[:n_green], alpha=0.8, c='darkorange')
-        ax1.scatter(df_pca.PCA1[n_green:], df_pca.PCA2[n_green:], alpha=0.8)
+        ax1.scatter(df_pca.PCA1[:n_orange], df_pca.PCA2[:n_orange], alpha=0.8, c='darkorange')
+        ax1.scatter(df_pca.PCA1[n_orange:], df_pca.PCA2[n_orange:], alpha=0.8)
         ax1.grid()
         ax1.set_xlabel(f"PC1({(pca.explained_variance_ratio_[0]*100).round(2)}%)")
         ax1.set_ylabel(f"PC2({(pca.explained_variance_ratio_[1]*100).round(2)}%)")
@@ -762,10 +762,10 @@ def main():
             print('- PCA..', end ='')
             for i in [0]:
                 CLR_PCA(df = count_data, size = get_args().PCA_size,
-                        delta =i, tag = "count", n_green = get_args().n_green, CLR = False, evalue = e)
+                        delta =i, tag = "count", n_orange = get_args().n_orange, CLR = False, evalue = e)
             for i in [1]:
                 CLR_PCA(df = ratio_data, size = get_args().PCA_size,
-                        delta =i, tag = "ratio", n_green = get_args().n_green, CLR = True, evalue = e)
+                        delta =i, tag = "ratio", n_orange = get_args().n_orange, CLR = True, evalue = e)
             print(f'done!')
             
         if 2 <= num_files:
