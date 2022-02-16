@@ -314,9 +314,8 @@ def main():
         print('- PCA..')
         e = df.Evalue
         allPCA_ratio =  os.path.split(os.path.abspath(os.path.join(get_args().ratio, '.')))[-1]
-        ratio_data = pd.read_csv(f"./{allPCA_ratio}/1e-01/COG_ratio_1e-01.csv",  index_col=0)
-        for i in range(get_args().delta, len(ratio_data)-get_args().delta):
-            e_i = format(e[i-get_args().delta],'.0e')
+        for i in range(len(df)):
+            e_i = format(e[i],'.0e')
             ratio_data = pd.read_csv(f"./{allPCA_ratio}/{e_i}/COG_ratio_{e_i}.csv",  index_col=0)
             CLR_PCA(df = ratio_data, size = get_args().PCA_size,
                     delta =1, tag = "ratio", n_orange = get_args().n_orange, CLR = True, 
