@@ -19,7 +19,7 @@ def get_args():
     parser.add_argument('-ratio' , dest ='ratio',
                         help = 'specify ./allPCA_ratio/ when you omit rpsblast')
     parser.add_argument('-df' , dest ='df', 
-                        help = 'specify ./LossGraph.csv')
+                        help = 'specify LossGraph.csv when you omit rpsblast')
     parser.add_argument('-t', dest='num_threads',
                        default=42,type = int, help = 'num_threads(default:42)')        
     parser.add_argument('-l' , dest ='loss_size',
