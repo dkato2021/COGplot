@@ -16,8 +16,8 @@ def get_args():
     parser = argparse.ArgumentParser(description='dkato. Feb. 2022')
     parser.add_argument('-AA' , dest ='AA', nargs='*',
                         help = 'paths　to your amino acids files of genes')
-    parser.add_argument('-rl' , dest ='rpsloss', nargs='*',
-                        help = 'specify ./rps_forLoss/* when you omit rpsblast')
+    parser.add_argument('-ratio' , dest ='ratio',
+                        help = 'specify ./allPCA_ratio/ when you omit rpsblast')
     parser.add_argument('-df' , dest ='df', 
                         help = 'specify ./LossGraph.csv')
     parser.add_argument('-t', dest='num_threads',
@@ -142,9 +142,14 @@ def get_main_dataset(path_to_rpsRes = None,
         if 'COGdata' not in os.listdir(path=f"./out_{evalue}/"):
             os.system(f'mkdir ./out_{evalue}/COGdata/') 
         #count_data.to_csv(f"./out_{evalue}/COGdata/COG_count.csv") 
-        #ratio_data.to_csv(f"./out_{evalue}/COGdata/COG_ratio.csv")
         #out_COG.to_csv(f"./out_{evalue}/COGdata/COG_annotation.csv")
-
+    _ = format(evalue,'.0e')
+    if f'allPCA_ratio' not in os.listdir(path='./'):
+        os.system(f'mkdir ./allPCA_ratio/')
+    if f'{_}' not in os.listdir(path=f"./allPCA_ratio/"):
+        os.system(f'mkdir ./allPCA_ratio/{_}/') 
+        
+    ratio_data.to_csv(f"./allPCA_ratio/{format(evalue,'.0e')}/COG_ratio_{format(evalue,'.0e')}.csv")
     return count_data, ratio_data, out_COG_i
  
 def get_loss_data(path_to_rpsRes_forLoss = None,
@@ -297,32 +302,25 @@ def main():
         print('- PCA..')
         e = df.Evalue
         for i in range(get_args().delta, len(ratio_data)-get_args().delta):
+            e_i = format(e[i-get_args().delta],'.0e')
             CLR_PCA(df = ratio_data[i], size = get_args().PCA_size,
                     delta =1, tag = "ratio", n_orange = get_args().n_orange, CLR = True, 
-                    evalue = format(e[i],'.0e'))
+                    evalue = e_i)
         
-    elif get_args().df is not None:
+    elif  get_args().ratio is not None and get_args().df is not None:
         print('- loss graph..')
         df = pd.read_csv(get_args().df, index_col=0)
         plot_loss(df, delta = get_args().delta, points = get_args().points, size = get_args().loss_size)
-        
-    elif get_args().rpsloss is not None:
-        print('- loss graph..')
-        df, ratio_data = get_loss_data(path_to_rpsRes_forLoss = get_args().rpsloss,
-                                  evalue = evalue_ForLoss,
-                                  points = get_args().points,
-                                  size = get_args().loss_size, 
-                                  delta = get_args().delta, 
-                                  path_to_cddid = get_args().cddid,
-                                  path_to_cog = get_args().cog)
-        
-        plot_loss(df, delta = get_args().delta, points = get_args().points, size = get_args().loss_size)
         print('- PCA..')
         e = df.Evalue
+        allPCA_ratio =  os.path.split(os.path.abspath(os.path.join(get_args().ratio, '.')))[-1]
+        ratio_data = pd.read_csv(f"./{allPCA_ratio}/1e-01/COG_ratio_1e-01.csv",  index_col=0)
         for i in range(get_args().delta, len(ratio_data)-get_args().delta):
-            CLR_PCA(df = ratio_data[i], size = get_args().PCA_size,
+            e_i = format(e[i-get_args().delta],'.0e')
+            ratio_data = pd.read_csv(f"./{allPCA_ratio}/{e_i}/COG_ratio_{e_i}.csv",  index_col=0)
+            CLR_PCA(df = ratio_data, size = get_args().PCA_size,
                     delta =1, tag = "ratio", n_orange = get_args().n_orange, CLR = True, 
-                    evalue = format(e[i-get_args().delta],'.0e'))
+                    evalue = e_i)
         
 if __name__ == "__main__":
     main()
