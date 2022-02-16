@@ -296,7 +296,7 @@ def main():
         e = df.Evalue
         for i in range(get_args().delta, len(ratio_data)-get_args().delta):
             CLR_PCA(df = ratio_data[i], size = get_args().PCA_size,
-                    delta =i, tag = "ratio", n_orange = get_args().n_orange, CLR = True, 
+                    delta =1, tag = "ratio", n_orange = get_args().n_orange, CLR = True, 
                     evalue = format(e[i],'.0e'))
         
     elif get_args().df is not None:
