@@ -174,10 +174,12 @@ def get_loss_data(path_to_rpsRes_forLoss = None,
         k_plus   = np.array(_k_set_i[2].iloc[:,1:])
         loss    += [math.log((len(path_to_rpsRes_forLoss)/(k.sum()+1))*(get_bray(k, k_minus)*get_bray(k, k_plus)))]
 
+    if f'LossGraph' not in os.listdir(path='./'):
+        os.system(f'mkdir ./LossGraph/')
     e  = [float(_) for _ in evalue]
     df = pd.DataFrame(zip(e[delta:-delta], loss), columns = ['Evalue', 'Loss'])
     #optimal_e = format(df[df.Loss == min(loss)].iloc[0,0],'.0e')
-    df.to_csv(f"./LossGraph_delta{delta}_points{points}.csv")
+    df.to_csv(f"./LossGraph/LossGraph_delta{delta}_points{points}.csv")
     return df, ratio_data
 
 
@@ -192,7 +194,7 @@ def plot_loss(df, delta = None, points = None, size = None):
     ax1.set_ylabel('Loss', size = 4*size)
     plt.plot(df.Evalue, df.Loss, marker="D", c="m")
     
-    fig.savefig(f"./LossGraph_delta{delta}_points{points}.pdf") 
+    fig.savefig(f"./LossGraph/LossGraph_delta{delta}_points{points}.pdf") 
     
 def CLR_PCA(df = None, size = None, delta = None, tag = None, n_orange = None, CLR = None, evalue = None):#各行にCOG。
     if f'allPCA_{tag}' not in os.listdir(path='./'):
@@ -221,7 +223,7 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_orange = None, C
         df_clr = clr_in
     
     #PCA
-    pca = PCA(n_components=2)
+    pca = PCA(n_components=2, random_state=42)
     _ = pca.fit_transform(df_clr.T)
     df_pca = pd.DataFrame(_, columns = ["PCA1", "PCA2"])
     
