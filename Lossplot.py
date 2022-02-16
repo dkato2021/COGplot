@@ -195,10 +195,10 @@ def plot_loss(df, delta = None, points = None, size = None):
     fig.savefig(f"./LossGraph_delta{delta}_points{points}.pdf") 
     
 def CLR_PCA(df = None, size = None, delta = None, tag = None, n_orange = None, CLR = None, evalue = None):#各行にCOG。
-    if f'PCA_{tag}' not in os.listdir(path='./'):
-        os.system(f'mkdir ./PCA_{tag}/')
-    if f'{evalue}' not in os.listdir(path=f"./PCA_{tag}/"):
-        os.system(f'mkdir ./PCA_{tag}/{evalue}/') 
+    if f'allPCA_{tag}' not in os.listdir(path='./'):
+        os.system(f'mkdir ./allPCA_{tag}/')
+    if f'{evalue}' not in os.listdir(path=f"./allPCA_{tag}/"):
+        os.system(f'mkdir ./allPCA_{tag}/{evalue}/') 
     #if f'PCA_{tag}_{delta}' not in os.listdir(path=f"./out_{evalue}/PCA_{tag}/"):
     #    os.system(f'mkdir ./out_{evalue}/PCA_{tag}/PCA_{tag}_{delta}') 
         
@@ -236,7 +236,7 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_orange = None, C
         ax1.grid()
         ax1.set_xlabel(f"PC1({(pca.explained_variance_ratio_[0]*100).round(2)}%)")
         ax1.set_ylabel(f"PC2({(pca.explained_variance_ratio_[1]*100).round(2)}%)")
-        fig.savefig(f"./PCA_{tag}/{evalue}/PCA_COG_{tag}_{evalue}.pdf")
+        fig.savefig(f"./allPCA_{tag}/{evalue}/PCA_COG_{tag}_{evalue}.pdf")
 
         ax2 = ax1.twiny().twinx()
         for x, y, name in zip(pca.components_[0], pca.components_[1], df.COG):
@@ -246,7 +246,7 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_orange = None, C
         ax2.scatter(pca.components_[0],  pca.components_[1], alpha=0, color='m')
         ax1.set_title(f"PC1 Loading", fontsize=20/size*2, color='m')
         ax2.set_ylabel(f"PC2 Loading", fontsize=20/size*2, color='m')
-        fig.savefig(f"./PCA_{tag}/{evalue}/PCA_COG_{tag}_{evalue}_withLoadingFactor.pdf")
+        fig.savefig(f"./allPCA_{tag}/{evalue}/PCA_COG_{tag}_{evalue}_withLoadingFactor.pdf")
 
     plot_PCA(df_pca, pca, df, evalue)
     
@@ -268,7 +268,7 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_orange = None, C
         ax2.scatter(pca.components_[0],  pca.components_[1], alpha=0, color='m')
         ax1.set_title(f"PC1 Loading", fontsize=20/size*2, color='m')
         ax2.set_ylabel(f"PC2 Loading", fontsize=20/size*2, color='m')
-        fig.savefig(f"./PCA_{tag}/{evalue}/PCA_COG_{tag}_{evalue}_NoName.pdf")
+        fig.savefig(f"./allPCA_{tag}/{evalue}/PCA_COG_{tag}_{evalue}_NoName.pdf")
 
     plot_PCA_NoName(df_pca, pca, df, evalue)
     
