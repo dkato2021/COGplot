@@ -10,7 +10,7 @@ $ chmod u+x *.py
 ```
 ## Usage
 ```
-$ loss.py -AA gene1.fasta gene2.fasta ...
+$ Lossplot.py -AA gene1.fasta gene2.fasta ...
 $ COGplot.py -AA gene1.fasta gene2.fasta ...
 ```
 
@@ -32,7 +32,7 @@ optional arguments:
   -cddid CDDID          path to your cddid_COG.tbl(default:/home/tmp/db/COG/cdd2cog/cddid_COG.tbl)
   -cog COG              path to your cog-20.def.tsv(default:/home/tmp/db/COG/cdd2cog/cog-20.def.tsv)
 ```
-## optional arguments of loss.py
+## optional arguments of Lossplot.py
 ```
 optional arguments:
   -h, --help            show this help message and exit
