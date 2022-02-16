@@ -6,14 +6,15 @@
 ```
 $ pip install matplotlib-venn
 $ git clone https://github.com/dkato2021/COGplot.git
-$ chmod u+x COGplot.py
+$ chmod u+x *.py
 ```
 ## Usage
 ```
+$ loss.py -AA gene1.fasta gene2.fasta ...
 $ COGplot.py -AA gene1.fasta gene2.fasta ...
 ```
 
-## optional arguments
+## optional arguments of COGplot.py
 ```
 optional arguments:
   -h, --help            show this help message and exit
@@ -30,6 +31,23 @@ optional arguments:
   -cogdb COGDB          path to your cogdb to run rpsblast(default:/home/tmp/db/COG/Cog)
   -cddid CDDID          path to your cddid_COG.tbl(default:/home/tmp/db/COG/cdd2cog/cddid_COG.tbl)
   -cog COG              path to your cog-20.def.tsv(default:/home/tmp/db/COG/cdd2cog/cog-20.def.tsv)
+```
+## optional arguments of loss.py
+```
+optional arguments:
+  -h, --help            show this help message and exit
+  -AA [AA [AA ...]]     paths　to your amino acids files of genes
+  -rl [RPSLOSS [RPSLOSS ...]] specify ./rps_forLoss/* when you omit rpsblast
+  -df DF                specify ./LossGraph.csv
+  -t NUM_THREADS        num_threads(default:42)
+  -l LOSS_SIZE          specify a integer value: graph size of loss graph(default:6)
+  -p POINTS             number of points in loss graph
+  -d DELTA              search interval of E-value(value 4 is recommended)
+  -PCA PCA_SIZE         specify a integer value: graph size of PCA plot(default:5)
+  -o N_ORANGE           Number of points dyed in orange in a PCA plot(default:0)
+  -cogdb COGDB          path to your cogdb to run rpsblast(default:/home/tmp/db/COG/Cog)
+  -cddid CDDID          path to your cddid_COG.tbl(default:/home/tmp/db/COG/cdd2cog/cddid_COG.tbl)
+  -cog COG              path to your cog-20.def.tsv(default:/home/tmp/db/COG/c d2cog/cog-20.def.tsv)
 ```
 ## tips
 ```
