@@ -17,9 +17,9 @@ def get_args():
     parser.add_argument('-AA' , dest ='AA', nargs='*',
                         help = 'paths　to your amino acids files of genes')
     parser.add_argument('-ratio' , dest ='ratio',
-                        help = 'specify ./allPCA_ratio/ when you omit rpsblast')
-    parser.add_argument('-df' , dest ='df', 
-                        help = 'specify LossGraph.csv when you omit rpsblast')
+                        help = 'When you omit rpsblast, specify ./allPCA_ratio/ along with the csv option')
+    parser.add_argument('-csv' , dest ='csv', 
+                        help = 'When you omit rpsblast, specify LossGraph.csv along with the ratio option')
     parser.add_argument('-t', dest='num_threads',
                        default=42,type = int, help = 'num_threads(default:42)')        
     parser.add_argument('-l' , dest ='loss_size',
@@ -307,9 +307,9 @@ def main():
                     delta =1, tag = "ratio", n_orange = get_args().n_orange, CLR = True, 
                     evalue = e_i)
         
-    elif  get_args().ratio is not None and get_args().df is not None:
+    elif  get_args().ratio is not None and get_args().csv is not None:
         print('- loss graph..')
-        df = pd.read_csv(get_args().df, index_col=0)
+        df = pd.read_csv(get_args().csv, index_col=0)
         plot_loss(df, delta = get_args().delta, points = get_args().points, size = get_args().loss_size)
         print('- PCA..')
         e = df.Evalue
