@@ -281,7 +281,7 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_orange = None, C
     
 def main():
     num = get_args().points
-    evalue_ForLoss = (np.ones(num+2)*float(1e-1) ** np.arange(num+2))[1:]
+    evalue_ForLoss = (np.ones(num+1)*float(1e-1) ** np.arange(num+1))[1:]
     
     if get_args().AA is not None:
         print(f'- rpsblast for loss graph..')
@@ -300,29 +300,28 @@ def main():
         
         plot_loss(df, delta = get_args().delta, points = get_args().points, size = get_args().loss_size)
         print('- PCA..')
-        e = df.Evalue
-        for i in range(get_args().delta, len(ratio_data)-get_args().delta):
-            e_i = format(e[i-get_args().delta],'.0e')
+        e = [format(_,'.0e') for _ in evalue_ForLoss]
+        for i in range(len(e)):
             CLR_PCA(df = ratio_data[i], size = get_args().PCA_size,
                     delta =1, tag = "ratio", n_orange = get_args().n_orange, CLR = True, 
-                    evalue = e_i)
+                    evalue = e[i])
         
     elif  get_args().ratio is not None and get_args().csv is not None:
         print('- loss graph..')
         df = pd.read_csv(get_args().csv, index_col=0)
         plot_loss(df, delta = get_args().delta, points = get_args().points, size = get_args().loss_size)
         print('- PCA..')
-        e = df.Evalue
+        e = [format(_,'.0e') for _ in evalue_ForLoss]
         allPCA_ratio =  os.path.split(os.path.abspath(os.path.join(get_args().ratio, '.')))[-1]
-        for i in range(len(df)):
-            e_i = format(e[i],'.0e')
-            ratio_data = pd.read_csv(f"./{allPCA_ratio}/{e_i}/COG_ratio_{e_i}.csv",  index_col=0)
+        for i in range(len(e)):
+            ratio_data = pd.read_csv(f"./{allPCA_ratio}/{e[i]}/COG_ratio_{e[i]}.csv",  index_col=0)
             CLR_PCA(df = ratio_data, size = get_args().PCA_size,
                     delta =1, tag = "ratio", n_orange = get_args().n_orange, CLR = True, 
-                    evalue = e_i)
+                    evalue = e[i])
         
 if __name__ == "__main__":
     main()
+
 
 
 
