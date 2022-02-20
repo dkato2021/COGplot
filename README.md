@@ -38,7 +38,7 @@ optional arguments:
   -h, --help            show this help message and exit
   -AA [AA [AA ...]]     paths　to your amino acids files of genes(Venn diagram is not output if there are 6 or more files)
   -rps [RPS [RPS ...]]  path to your results of rpsblast
-  -e [EVALUE [EVALUE ...]] evalue in rpsblast(default:1e-28)
+  -e [EVALUE [EVALUE ...]] evalue in rpsblast(default:1e-)
   -bar BAR_SIZE         specify a integer value: graph size of bar plot(default:5)
   -b N_BLACK            Number of bars dyed in black in a bar graph(default:1)
   -PCA PCA_SIZE         specify a integer value: graph size of PCA plot(default:5)
