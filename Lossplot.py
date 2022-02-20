@@ -21,7 +21,7 @@ def get_args():
     parser.add_argument('-csv' , dest ='csv', 
                         help = 'When you omit rpsblast, specify LossGraph.csv along with the ratio option')
     parser.add_argument('-t', dest='num_threads',
-                       default=42,type = int, help = 'num_threads(default:42)')        
+                       default=48,type = int, help = 'num_threads(default:48)')        
     parser.add_argument('-l' , dest ='loss_size',
                         default= 6, type = int, help = 'specify a integer value: graph size of loss graph(default:6)')
     parser.add_argument('-p' , dest ='points',
@@ -291,7 +291,7 @@ def create_gif(e, out_filename):
         imgs.append(img)                                      
 
     imgs[0].save(out_filename,
-                 save_all=True, append_images=imgs[1:], optimize=False, duration=200)
+                 save_all=True, append_images=imgs[1:], optimize=False, duration=200, loop=0)
 def main():
     num = get_args().points
     evalue_ForLoss = (np.ones(num+1)*float(1e-1) ** np.arange(num+1))[1:]
