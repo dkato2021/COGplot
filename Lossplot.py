@@ -21,7 +21,7 @@ def get_args():
     parser.add_argument('-csv' , dest ='csv', 
                         help = 'When you omit rpsblast, specify LossGraph.csv along with the ratio option')
     parser.add_argument('-t', dest='num_threads',
-                       default=42,type = int, help = 'num_threads(default:42)')        
+                       default=48,type = int, help = 'num_threads(default:48)')        
     parser.add_argument('-l' , dest ='loss_size',
                         default= 6, type = int, help = 'specify a integer value: graph size of loss graph(default:6)')
     parser.add_argument('-p' , dest ='points',
