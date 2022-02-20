@@ -595,7 +595,7 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_green = None, CL
         df_clr = clr_in
     
     #PCA
-    pca = PCA(n_components=2)
+    pca = PCA(n_components=2, random_state=42)
     _ = pca.fit_transform(df_clr.T)
     df_pca = pd.DataFrame(_, columns = ["PCA1", "PCA2"])
     
