@@ -20,7 +20,7 @@ def get_args():
     parser.add_argument('-rps' , dest ='rps', nargs='*',
                         help = 'path to your results of rpsblast')
     parser.add_argument('-e' , dest ='evalue', nargs='*',
-                        default= ['1e-28'],  help = 'evalue in rpsblast(default:1e-28)')
+                        default= ['1e-4'],  help = 'evalue in rpsblast(default:1e-4)')
     parser.add_argument('-bar' , dest ='bar_size',
                         default= 5, type = int, help = 'specify a integer value: graph size of bar plot(default:5)')
     parser.add_argument('-b', dest='n_black',
