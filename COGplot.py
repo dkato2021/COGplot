@@ -35,7 +35,7 @@ def get_args():
                         default= 1, type = int,
                         help = 'Number of files to search for unique genes (number of files from the top)(default:1)')
     parser.add_argument('-t', dest='num_threads',
-                       default=42,type = int, help = 'num_threads(default:42)')        
+                       default=48,type = int, help = 'num_threads(default:48)')        
                         
     parser.add_argument('-cogdb' , dest ='cogdb',
                         default= '/home/tmp/db/COG/Cog', 
