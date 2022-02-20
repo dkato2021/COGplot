@@ -177,7 +177,8 @@ def get_loss_data(path_to_rpsRes_forLoss = None,
         k_minus  = np.array(_k_set_i[0].iloc[:,1:])
         k        = np.array(_k_set_i[1].iloc[:,1:])
         k_plus   = np.array(_k_set_i[2].iloc[:,1:])
-        loss    += [math.log((len(path_to_rpsRes_forLoss)/(k.sum()+1))*(get_bray(k, k_minus)*get_bray(k, k_plus)))]
+        _k_mean = k.sum()/len(path_to_rpsRes_forLoss)
+        loss    += [math.log( (1/(_k_mean+1) )*(get_bray(k, k_minus)*get_bray(k, k_plus)))]
 
     if f'LossGraph' not in os.listdir(path='./'):
         os.system(f'mkdir ./LossGraph/')
