@@ -319,7 +319,7 @@ def main():
                     delta =1, tag = "ratio", n_orange = get_args().n_orange, CLR = True, 
                     evalue = e[i])
         
-        create_gif(e, './LossGraph/LossGraphs.gif')
+        create_gif(e, './LossGraph/allPCA_ratio.gif')
         
     elif  get_args().csv is not None:
         print('- loss graph..')
@@ -336,7 +336,7 @@ def main():
                     delta =1, tag = "ratio", n_orange = get_args().n_orange, CLR = True, 
                     evalue = e[i])
         
-        create_gif(e, './LossGraph/LossGraphs.gif')
+        create_gif(e, './LossGraph/allPCA_ratio.gif')
 if __name__ == "__main__":
     main()
 
