@@ -283,15 +283,13 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_orange = None, C
     plot_PCA_NoName(df_pca, pca, df, evalue)
     
 def create_gif(e, out_filename):
-    path_list = [f"./allPCA_ratio/{e_i}/PCA_COG_ratio_{e_i}_withLoadingFactor.png" for e_i in e] # ファイルパスをソートしてリストする
-    imgs = []                                                   # 画像をappendするための空配列を定義
+    path_list = [f"./allPCA_ratio/{e_i}/PCA_COG_ratio_{e_i}_withLoadingFactor.png" for e_i in e]
+    imgs = []                                            
 
-    # ファイルのフルパスからファイル名と拡張子を抽出
     for i in range(len(path_list)):
-        img = Image.open(path_list[i])                          # 画像ファイルを1つずつ開く
-        imgs.append(img)                                        # 画像をappendで配列に格納していく
+        img = Image.open(path_list[i])      
+        imgs.append(img)                       
 
-    # appendした画像配列をGIFにする。durationで持続時間、loopでループ数を指定可能。
     imgs[0].save(out_filename,
                  save_all=True, append_images=imgs[1:], optimize=False, duration=200)
 def main():
