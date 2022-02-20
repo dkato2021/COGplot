@@ -10,7 +10,7 @@ from sklearn.decomposition import PCA
 import math
 from itertools import chain
 from collections import Counter, Iterable
-
+from PIL import Image
 
 def get_args():
     parser = argparse.ArgumentParser(description='dkato. Feb. 2022')
@@ -251,9 +251,12 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_orange = None, C
             ax2.arrow(x=0,y=0, dx=x, dy=y,
                      width=.0001, length_includes_head=True,color='m')
         ax2.scatter(pca.components_[0],  pca.components_[1], alpha=0, color='m')
+        ax1.set_title(f"E-value = {evalue}", fontsize=20/size*2)
+        fig.savefig(f"./allPCA_{tag}/{evalue}/PCA_COG_{tag}_{evalue}_withLoadingFactor.png")
         ax1.set_title(f"PC1 Loading", fontsize=20/size*2, color='m')
         ax2.set_ylabel(f"PC2 Loading", fontsize=20/size*2, color='m')
         fig.savefig(f"./allPCA_{tag}/{evalue}/PCA_COG_{tag}_{evalue}_withLoadingFactor.pdf")
+        
 
     plot_PCA(df_pca, pca, df, evalue)
     
@@ -279,6 +282,18 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_orange = None, C
 
     plot_PCA_NoName(df_pca, pca, df, evalue)
     
+def create_gif(e, out_filename):
+    path_list = [f"./allPCA_ratio/{e_i}/PCA_COG_ratio_{e_i}_withLoadingFactor.png" for e_i in e] # ファイルパスをソートしてリストする
+    imgs = []                                                   # 画像をappendするための空配列を定義
+
+    # ファイルのフルパスからファイル名と拡張子を抽出
+    for i in range(len(path_list)):
+        img = Image.open(path_list[i])                          # 画像ファイルを1つずつ開く
+        imgs.append(img)                                        # 画像をappendで配列に格納していく
+
+    # appendした画像配列をGIFにする。durationで持続時間、loopでループ数を指定可能。
+    imgs[0].save(out_filename,
+                 save_all=True, append_images=imgs[1:], optimize=False, duration=200)
 def main():
     num = get_args().points
     evalue_ForLoss = (np.ones(num+1)*float(1e-1) ** np.arange(num+1))[1:]
@@ -306,10 +321,14 @@ def main():
                     delta =1, tag = "ratio", n_orange = get_args().n_orange, CLR = True, 
                     evalue = e[i])
         
-    elif  get_args().ratio is not None and get_args().csv is not None:
+        create_gif(e, './LossGraph/animation.gif')
+        
+    elif  get_args().csv is not None:
         print('- loss graph..')
         df = pd.read_csv(get_args().csv, index_col=0)
         plot_loss(df, delta = get_args().delta, points = get_args().points, size = get_args().loss_size)
+        
+    elif  get_args().ratio is not None:
         print('- PCA..')
         e = [format(_,'.0e') for _ in evalue_ForLoss]
         allPCA_ratio =  os.path.split(os.path.abspath(os.path.join(get_args().ratio, '.')))[-1]
@@ -319,9 +338,9 @@ def main():
                     delta =1, tag = "ratio", n_orange = get_args().n_orange, CLR = True, 
                     evalue = e[i])
         
+        create_gif(e, './LossGraph/animation.gif')
 if __name__ == "__main__":
     main()
-
 
 
 
