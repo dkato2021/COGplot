@@ -56,6 +56,7 @@ $ COGplot.py -AA ./X/* ./Y/* -e 1e-4 1e-12 1e-20
 ```
 ## How to determine the Evalue
 ![](./_/lossver14.png)
+![](./_/anime1.png)
 ![](./_/anime1.gif)
 ![](./_/lossT.png)
 ![](./_/lossT150.png)
