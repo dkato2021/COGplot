@@ -21,7 +21,7 @@ def get_args():
     parser.add_argument('-csv' , dest ='csv', 
                         help = 'When you omit rpsblast, specify LossGraph.csv along with the ratio option')
     parser.add_argument('-t', dest='num_threads',
-                       default=48,type = int, help = 'num_threads(default:48)')        
+                       default=42,type = int, help = 'num_threads(default:42)')        
     parser.add_argument('-l' , dest ='loss_size',
                         default= 6, type = int, help = 'specify a integer value: graph size of loss graph(default:6)')
     parser.add_argument('-p' , dest ='points',
@@ -251,8 +251,6 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_orange = None, C
             ax2.arrow(x=0,y=0, dx=x, dy=y,
                      width=.0001, length_includes_head=True,color='m')
         ax2.scatter(pca.components_[0],  pca.components_[1], alpha=0, color='m')
-        ax1.set_title(f"E-value = {evalue}", fontsize=20/size*2)
-        fig.savefig(f"./allPCA_{tag}/{evalue}/PCA_COG_{tag}_{evalue}_withLoadingFactor.png")
         ax1.set_title(f"PC1 Loading", fontsize=20/size*2, color='m')
         ax2.set_ylabel(f"PC2 Loading", fontsize=20/size*2, color='m')
         fig.savefig(f"./allPCA_{tag}/{evalue}/PCA_COG_{tag}_{evalue}_withLoadingFactor.pdf")
@@ -276,6 +274,8 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_orange = None, C
             ax2.arrow(x=0,y=0, dx=x, dy=y,
                      width=.0001, length_includes_head=True,color='m')
         ax2.scatter(pca.components_[0],  pca.components_[1], alpha=0, color='m')
+        ax1.set_title(f"E-value = {evalue}", fontsize=20/size*2)
+        fig.savefig(f"./allPCA_{tag}/{evalue}/PCA_COG_{tag}_{evalue}_withLoadingFactor.png")
         ax1.set_title(f"PC1 Loading", fontsize=20/size*2, color='m')
         ax2.set_ylabel(f"PC2 Loading", fontsize=20/size*2, color='m')
         fig.savefig(f"./allPCA_{tag}/{evalue}/PCA_COG_{tag}_{evalue}_NoName.pdf")
@@ -283,12 +283,12 @@ def CLR_PCA(df = None, size = None, delta = None, tag = None, n_orange = None, C
     plot_PCA_NoName(df_pca, pca, df, evalue)
     
 def create_gif(e, out_filename):
-    path_list = [f"./allPCA_ratio/{e_i}/PCA_COG_ratio_{e_i}_withLoadingFactor.png" for e_i in e]
-    imgs = []                                            
+    path_list = [f"./allPCA_ratio/{e_i}/PCA_COG_ratio_{e_i}_withLoadingFactor.png" for e_i in e] 
+    imgs = []      
 
     for i in range(len(path_list)):
-        img = Image.open(path_list[i])      
-        imgs.append(img)                       
+        img = Image.open(path_list[i])                       
+        imgs.append(img)                                      
 
     imgs[0].save(out_filename,
                  save_all=True, append_images=imgs[1:], optimize=False, duration=200)
@@ -319,7 +319,7 @@ def main():
                     delta =1, tag = "ratio", n_orange = get_args().n_orange, CLR = True, 
                     evalue = e[i])
         
-        create_gif(e, './LossGraph/animation.gif')
+        create_gif(e, './LossGraph/LossGraphs.gif')
         
     elif  get_args().csv is not None:
         print('- loss graph..')
@@ -336,7 +336,7 @@ def main():
                     delta =1, tag = "ratio", n_orange = get_args().n_orange, CLR = True, 
                     evalue = e[i])
         
-        create_gif(e, './LossGraph/animation.gif')
+        create_gif(e, './LossGraph/LossGraphs.gif')
 if __name__ == "__main__":
     main()
 
